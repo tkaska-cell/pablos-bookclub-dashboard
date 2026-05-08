@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PABLOS エキスパート読書会 ダッシュボード</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#FAF9F6;
+    --ink:#141414;
+    --sub:#666;
+    --line:#ECEAE5;
+    --card:#FFFFFF;
+    --accent:#C8A960;
+    --accent2:#1A1A1A;
+    --pos:#2E7D5B;
+    --warn:#B85C2A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic UI","Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 24px 80px}
+  .brand{
+    display:flex;align-items:baseline;gap:12px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:16px;margin-bottom:36px;
+  }
+  .brand .logo{font-size:11px;letter-spacing:.25em;color:var(--accent);font-weight:600}
+  .brand h1{margin:0;font-size:22px;font-weight:600;letter-spacing:.02em}
+  .brand .meta{margin-left:auto;font-size:11px;color:var(--sub)}
+
+  .hero{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px;
+  }
+  .stat{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:20px 22px;
+    transition:transform .15s ease;
+  }
+  .stat:hover{transform:translateY(-1px)}
+  .stat .lbl{font-size:11px;color:var(--sub);letter-spacing:.05em;margin-bottom:6px}
+  .stat .num{font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+  .stat .num small{font-size:14px;color:var(--sub);font-weight:400;margin-left:4px}
+  .stat .sub{font-size:11px;color:var(--sub);margin-top:4px}
+  .stat.gold .num{color:#A88B40}
+  .stat.gold{background:linear-gradient(135deg,#FFFAEC 0%,#FDF4D7 100%);border-color:#EFE0B0}
+
+  section{margin-bottom:40px}
+  section > h2{
+    font-size:13px;font-weight:600;letter-spacing:.05em;
+    color:var(--sub);margin:0 0 14px;padding-left:10px;
+    border-left:3px solid var(--accent);
+  }
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px}
+  .panel h3{margin:0 0 4px;font-size:14px;font-weight:600}
+  .panel .desc{font-size:11px;color:var(--sub);margin-bottom:16px}
+  canvas{max-height:280px}
+
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-weight:600;color:var(--sub);background:#FBFAF7;font-size:11px;letter-spacing:.03em}
+  th:first-child,td:first-child{text-align:left}
+  td .ttl{font-size:11px;color:var(--sub);display:block}
+  tr.month-row td{font-variant-numeric:tabular-nums}
+  tr.year-divider td{background:#F4F1EA;font-weight:600;color:var(--accent2);font-size:11px;letter-spacing:.05em;padding:6px 10px;text-align:left}
+  .nps-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+  .nps-good{background:#E8F5EE;color:var(--pos)}
+  .nps-mid{background:#FFF7E8;color:#A07300}
+  .nps-low{background:#FCEDE5;color:var(--warn)}
+
+  .note{background:#FFF8E0;border:1px solid #F1E6B8;border-radius:8px;padding:12px 16px;font-size:12px;color:#5C4A1F;margin-bottom:24px}
+  .footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:11px;color:var(--sub);text-align:center}
+
+  @media (max-width:880px){
+    .hero{grid-template-columns:repeat(2,1fr)}
+    .grid2,.grid3{grid-template-columns:1fr}
+    .wrap{padding:28px 16px 60px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <span class="logo">PABLOS</span>
+    <h1>エキスパート読書会 ダッシュボード</h1>
+    <div class="meta">更新: <span id="genDate"></span></div>
+  </div>
+
+  <div class="note" id="note"></div>
+
+  <!-- HERO KPI -->
+  <div class="hero">
+    <div class="stat gold">
+      <div class="lbl">F2 転換率</div>
+      <div class="num"><span id="f2">–</span><small>%</small></div>
+      <div class="sub">過去1回参加者 → 直近回もリピート（<span id="f2sub"></span>）</div>
+    </div>
+    <div class="stat gold">
+      <div class="lbl">ロイヤル継続率</div>
+      <div class="num"><span id="loyal">–</span><small>%</small></div>
+      <div class="sub">過去2回以上参加者 → 直近回もリピート（<span id="loyalsub"></span>）</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">直近回 申込ユニーク</div>
+      <div class="num"><span id="totalLatest">–</span></div>
+      <div class="sub">新規 <span id="newLatest"></span>名 / リピート <span id="repLatest"></span>名（<span id="latestDate"></span>）</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">累計ユニーク参加者</div>
+      <div class="num"><span id="cumul">–</span></div>
+      <div class="sub"><span id="cumulPeriod"></span>（10回分）</div>
+    </div>
+  </div>
+
+  <!-- 月次推移 -->
+  <section>
+    <h2>月次推移：申込人数・当日参加・NPS</h2>
+    <div class="panel">
+      <h3>2025年1月 〜 2026年4月</h3>
+      <div class="desc">スプレッドシート（Zoom登録ベース） × NPSアンケート集計</div>
+      <canvas id="trendChart" height="120"></canvas>
+    </div>
+  </section>
+
+  <!-- リピート構成 -->
+  <section>
+    <h2>直近回の参加者構成（ハッシュ化IDベース）</h2>
+    <div class="grid2">
+      <div class="panel">
+        <h3>新規 vs リピート</h3>
+        <div class="desc">直近回参加者を、過去出現の有無で分類</div>
+        <canvas id="newRepeat"></canvas>
+      </div>
+      <div class="panel">
+        <h3>参加回数の階層</h3>
+        <div class="desc">直近回の参加者を、累計参加回数で3階層に分解</div>
+        <canvas id="tierChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- コホート -->
+  <section>
+    <h2>コホート分析：各回の参加者は直近回までどれだけ残ったか</h2>
+    <div class="panel">
+      <h3>基準回 → 直近回 継続率</h3>
+      <div class="desc">過去各開催回の参加者のうち、直近回も来た人の比率</div>
+      <canvas id="cohortChart"></canvas>
+    </div>
+  </section>
+
+  <!-- 月次テーブル -->
+  <section>
+    <h2>月次集計テーブル</h2>
+    <div class="panel" style="overflow-x:auto">
+      <table id="monthTable">
+        <thead>
+          <tr>
+            <th>月</th><th>テーマ／著書</th><th>ファシリ</th>
+            <th>申込</th><th>当日参加</th><th>参加率</th><th>NPS</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- セグメント別マトリクス -->
+  <section>
+    <h2>開催回 × 流入セグメント（MyASP申込ベース）</h2>
+    <div class="panel" style="overflow-x:auto">
+      <table id="matrix">
+        <thead><tr><th>開催日</th><th>メンバー(NFT)</th><th>一般</th><th>LINE</th><th>招待</th><th>合計(ユニーク)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="footer">
+    PABLOS 読書会分析 ｜ 個人情報を含まないハッシュ化済みデータ（HMAC-SHA256）から集計<br>
+    <span id="period"></span>
+  </div>
+</div>
+
+<script>
+const npsBadge = v => {
+  if(v == null || v === '') return '–';
+  const n = Number(v);
+  const cls = n >= 60 ? 'nps-good' : n >= 50 ? 'nps-mid' : 'nps-low';
+  return `<span class="nps-pill ${cls}">${n.toFixed(1)}</span>`;
+};
+
+Promise.all([
+  fetch('dashboard_data.json').then(r=>r.json()),
+  fetch('data/spreadsheet_metrics.json').then(r=>r.json())
+]).then(([d, sheet])=>{
+  // === HERO ===
+  document.getElementById('genDate').textContent = d.generated_at;
+  document.getElementById('period').textContent = d.period;
+  document.getElementById('note').textContent = d.note;
+  document.getElementById('f2').textContent = d.kpi.f2_rate;
+  document.getElementById('f2sub').textContent = `${d.kpi.f2_numerator}/${d.kpi.f2_denominator}名`;
+  document.getElementById('loyal').textContent = d.kpi.loyal_rate;
+  document.getElementById('loyalsub').textContent = `${d.kpi.loyal_numerator}/${d.kpi.loyal_denominator}名`;
+  document.getElementById('totalLatest').textContent = d.latest.total.toLocaleString();
+  document.getElementById('newLatest').textContent = d.latest.new;
+  document.getElementById('repLatest').textContent = d.latest.repeat;
+  document.getElementById('latestDate').textContent = d.latest.date;
+  document.getElementById('cumul').textContent = d.totals.cumulative_unique.toLocaleString();
+  document.getElementById('cumulPeriod').textContent = d.period.split('（')[0];
+
+  // === Monthly trend (combined) ===
+  const months = [];
+  ['2025','2026'].forEach(y=>{
+    sheet.yearly[y].monthly.forEach(m=>months.push({...m, year:y}));
+  });
+  new Chart(document.getElementById('trendChart'), {
+    data: {
+      labels: months.map(m=>`${m.year.slice(2)}/${m.month}`),
+      datasets: [
+        { type:'bar', label:'申込人数', data:months.map(m=>m.申込人数), backgroundColor:'#E5DBC0', borderRadius:4, yAxisID:'y' },
+        { type:'bar', label:'当日参加', data:months.map(m=>m.当日参加), backgroundColor:'#C8A960', borderRadius:4, yAxisID:'y' },
+        { type:'line', label:'NPS', data:months.map(m=>m.NPS), borderColor:'#1A1A1A', backgroundColor:'#1A1A1A', tension:0.25, yAxisID:'y1', pointRadius:4 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins: { legend: { position:'bottom', labels:{boxWidth:12, font:{size:11}} }},
+      scales: {
+        y:{ beginAtZero:true, position:'left', title:{display:true, text:'人数', font:{size:11}} },
+        y1:{ beginAtZero:true, position:'right', max:100, grid:{drawOnChartArea:false}, title:{display:true, text:'NPS', font:{size:11}} }
+      }
+    }
+  });
+
+  // === New vs Repeat ===
+  new Chart(document.getElementById('newRepeat'), {
+    type:'doughnut',
+    data:{
+      labels:[`新規 ${d.latest.new_pct}%`, `リピート ${d.latest.repeat_pct}%`],
+      datasets:[{ data:[d.latest.new, d.latest.repeat], backgroundColor:['#1A1A1A','#C8A960'], borderWidth:0 }]
+    },
+    options:{ plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,font:{size:11}} } }, cutout:'65%' }
+  });
+
+  // === Tier ===
+  const tierLabels = ['新規','2回目','3回以上'];
+  new Chart(document.getElementById('tierChart'), {
+    type:'bar',
+    data:{
+      labels:tierLabels,
+      datasets:[{ data:tierLabels.map(l=>d.tier[l]||0), backgroundColor:['#1A1A1A','#C8A960','#A88B40'], borderRadius:6 }]
+    },
+    options:{ plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+  });
+
+  // === Cohort ===
+  new Chart(document.getElementById('cohortChart'), {
+    data:{
+      labels:d.cohort_to_latest.map(c=>c.date),
+      datasets:[
+        { type:'bar', label:'基準回 申込ユニーク', data:d.cohort_to_latest.map(c=>c.base), backgroundColor:'#E5DBC0', borderRadius:4 },
+        { type:'bar', label:`${d.latest.date} もリピート`, data:d.cohort_to_latest.map(c=>c.continued), backgroundColor:'#C8A960', borderRadius:4 },
+        { type:'line', label:'継続率(%)', data:d.cohort_to_latest.map(c=>c.rate), yAxisID:'y1', borderColor:'#1A1A1A', backgroundColor:'#1A1A1A', tension:0.25, pointRadius:3 }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,font:{size:11}} } },
+      scales:{
+        y:{ beginAtZero:true, position:'left' },
+        y1:{ beginAtZero:true, position:'right', max:100, grid:{drawOnChartArea:false}, title:{display:true, text:'継続率(%)', font:{size:11}} }
+      }
+    }
+  });
+
+  // === Monthly table ===
+  const tb = document.querySelector('#monthTable tbody');
+  ['2025','2026'].forEach(y=>{
+    tb.insertAdjacentHTML('beforeend', `<tr class="year-divider"><td colspan="7">${y}年（平均: 申込${sheet.yearly[y].average.申込人数} / 当日${sheet.yearly[y].average.当日参加} / 参加率${sheet.yearly[y].average.当日参加率.toFixed(1)}% / NPS${sheet.yearly[y].average.NPS}）</td></tr>`);
+    sheet.yearly[y].monthly.forEach(m=>{
+      tb.insertAdjacentHTML('beforeend', `
+        <tr class="month-row">
+          <td>${m.month}</td>
+          <td><span class="ttl">${m.title || '–'}</span></td>
+          <td>${m.facilitator || '–'}</td>
+          <td>${m.申込人数 ?? '–'}</td>
+          <td>${m.当日参加 ?? '–'}</td>
+          <td>${m.当日参加率 != null ? m.当日参加率.toFixed(1)+'%' : '–'}</td>
+          <td>${npsBadge(m.NPS)}</td>
+        </tr>`);
+    });
+  });
+
+  // === Matrix ===
+  const mb = document.querySelector('#matrix tbody');
+  d.matrix.forEach(r=>{
+    mb.insertAdjacentHTML('beforeend',
+      `<tr><td>${r.date}</td><td>${r['メンバー(NFT)']||'–'}</td><td>${r['一般']||'–'}</td><td>${r['LINE']||'–'}</td><td>${r['招待']||'–'}</td><td><b>${r.total}</b></td></tr>`);
+  });
+});
+</script>
+</body>
+</html>

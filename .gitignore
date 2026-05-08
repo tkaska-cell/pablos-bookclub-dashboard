@@ -1,0 +1,22 @@
+# 生PIIは絶対にコミットしない
+csv/
+data/.salt
+data/readers_anon.csv
+*.csv.bak
+/tmp/
+*_cookie.txt
+*session*.txt
+
+# 認証情報を含む可能性のあるシェル/スクリプト
+download_all.sh
+dl_per_scenario.sh
+export_cookie.sh
+secure_pull.py
+
+# PII含む旧ファイル
+月別人数_スプシ用.csv
+月別種別人数_テンプレ.csv
+DL進捗管理*
+シナリオ検索リスト.md
+analyze.py
+CSVダウンロード手順.md
