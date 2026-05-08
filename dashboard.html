@@ -81,6 +81,43 @@
   .note{background:#FFF8E0;border:1px solid #F1E6B8;border-radius:8px;padding:12px 16px;font-size:12px;color:#5C4A1F;margin-bottom:24px}
   .footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:11px;color:var(--sub);text-align:center}
 
+  /* 用語ヒント */
+  .term{position:relative;cursor:help;border-bottom:1px dotted var(--accent);padding-bottom:1px}
+  .term::after{
+    content:"＊"; color:var(--accent); font-size:.8em; margin-left:1px; font-weight:600;
+  }
+  .term:hover .tip, .term:focus .tip{opacity:1;visibility:visible;transform:translateY(0)}
+  .tip{
+    position:absolute; left:0; top:calc(100% + 8px); z-index:10;
+    background:#1A1A1A; color:#FAF9F6;
+    padding:10px 14px; border-radius:8px;
+    font-size:11px; line-height:1.6; font-weight:400; letter-spacing:0;
+    width:280px; max-width:80vw;
+    opacity:0; visibility:hidden; transform:translateY(-4px);
+    transition:opacity .15s ease, transform .15s ease;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+    text-align:left; white-space:normal;
+  }
+  .tip b{color:#FFD58A;font-weight:600}
+  .tip::before{
+    content:""; position:absolute; left:14px; top:-5px;
+    border:5px solid transparent; border-bottom-color:#1A1A1A;
+  }
+
+  /* 用語解説パネル */
+  .glossary{
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:24px 28px; margin-top:8px;
+  }
+  .glossary h3{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--sub);letter-spacing:.05em}
+  .gl-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
+  .gl-item{font-size:12px;line-height:1.7}
+  .gl-item dt{font-weight:600;color:var(--ink);margin-bottom:2px;font-size:12.5px}
+  .gl-item dt::before{content:"＊ ";color:var(--accent);font-weight:700}
+  .gl-item dd{margin:0;color:var(--sub)}
+  .gl-item .why{display:block;margin-top:4px;color:#888;font-size:11px}
+  @media (max-width:880px){ .gl-grid{grid-template-columns:1fr} }
+
   @media (max-width:880px){
     .hero{grid-template-columns:repeat(2,1fr)}
     .grid2,.grid3{grid-template-columns:1fr}
@@ -101,22 +138,22 @@
   <!-- HERO KPI -->
   <div class="hero">
     <div class="stat gold">
-      <div class="lbl">F2 転換率</div>
+      <div class="lbl"><span class="term" tabindex="0">F2 転換率<span class="tip"><b>F2 転換率</b><br>「過去1回だけ参加した人」のうち、直近回もリピートした比率。<br><br>初回参加者をどれだけ"2回目"に引き戻せたかを示す、新規→定着の入口指標。SaaS / 教育サービスでは20-30%が目安。</span></span></div>
       <div class="num"><span id="f2">–</span><small>%</small></div>
       <div class="sub">過去1回参加者 → 直近回もリピート（<span id="f2sub"></span>）</div>
     </div>
     <div class="stat gold">
-      <div class="lbl">ロイヤル継続率</div>
+      <div class="lbl"><span class="term" tabindex="0">ロイヤル継続率<span class="tip"><b>ロイヤル継続率</b><br>「過去2回以上参加した人」のうち、直近回もリピートした比率。<br><br>固定ファン層が離脱せず残っているかを示す、コミュニティの体力指標。50%超なら健全圏。</span></span></div>
       <div class="num"><span id="loyal">–</span><small>%</small></div>
       <div class="sub">過去2回以上参加者 → 直近回もリピート（<span id="loyalsub"></span>）</div>
     </div>
     <div class="stat">
-      <div class="lbl">直近回 申込ユニーク</div>
+      <div class="lbl">直近回 <span class="term" tabindex="0">申込ユニーク<span class="tip"><b>申込ユニーク</b><br>同一メールアドレスを1名としてカウント。1人が複数チャネル（NFT/一般/LINE）から申し込んでも1名に名寄せ。</span></span></div>
       <div class="num"><span id="totalLatest">–</span></div>
       <div class="sub">新規 <span id="newLatest"></span>名 / リピート <span id="repLatest"></span>名（<span id="latestDate"></span>）</div>
     </div>
     <div class="stat">
-      <div class="lbl">累計ユニーク参加者</div>
+      <div class="lbl"><span class="term" tabindex="0">累計ユニーク参加者<span class="tip"><b>累計ユニーク参加者</b><br>過去10回分の全申込者を、メールアドレス単位で重複排除した実人数。同じ人が3回参加していても1名としてカウント。</span></span></div>
       <div class="num"><span id="cumul">–</span></div>
       <div class="sub"><span id="cumulPeriod"></span>（10回分）</div>
     </div>
@@ -124,7 +161,7 @@
 
   <!-- 月次推移 -->
   <section>
-    <h2>月次推移：申込人数・当日参加・NPS</h2>
+    <h2>月次推移：申込人数・当日参加・<span class="term" tabindex="0" style="color:inherit">NPS<span class="tip"><b>NPS（Net Promoter Score）</b><br>「この読書会を友人に勧めたいか」を0-10点で聞き、「推奨者(9-10)% − 批判者(0-6)%」で算出する顧客ロイヤルティ指標。<br><br>+50以上で優良、+70以上でワールドクラス水準。</span></span></h2>
     <div class="panel">
       <h3>2025年1月 〜 2026年4月</h3>
       <div class="desc">スプレッドシート（Zoom登録ベース） × NPSアンケート集計</div>
@@ -134,7 +171,7 @@
 
   <!-- リピート構成 -->
   <section>
-    <h2>直近回の参加者構成（ハッシュ化IDベース）</h2>
+    <h2>直近回の参加者構成（<span class="term" tabindex="0" style="color:inherit">ハッシュ化ID<span class="tip"><b>ハッシュ化ID</b><br>メールアドレスをHMAC-SHA256で不可逆変換した16文字の識別子。同じ人は同じIDになるが、IDから元のメアドは復元不能。<br><br>個人情報を保持せずにリピート判定を可能にする手法。</span></span>ベース）</h2>
     <div class="grid2">
       <div class="panel">
         <h3>新規 vs リピート</h3>
@@ -142,7 +179,7 @@
         <canvas id="newRepeat"></canvas>
       </div>
       <div class="panel">
-        <h3>参加回数の階層</h3>
+        <h3>参加回数の<span class="term" tabindex="0">階層<span class="tip"><b>参加回数階層（Tier）</b><br>直近回の参加者を「新規 / 2回目 / 3回以上」の3層に分けたもの。<br><br>3回以上層が多いほどコアファンが厚い証拠。新規層が極端に多い場合は獲得頼みでリピートが追いついていない可能性。</span></span></h3>
         <div class="desc">直近回の参加者を、累計参加回数で3階層に分解</div>
         <canvas id="tierChart"></canvas>
       </div>
@@ -151,7 +188,7 @@
 
   <!-- コホート -->
   <section>
-    <h2>コホート分析：各回の参加者は直近回までどれだけ残ったか</h2>
+    <h2><span class="term" tabindex="0" style="color:inherit">コホート分析<span class="tip"><b>コホート分析</b><br>同じ条件（ここでは「同じ開催回に参加した」）でまとめたグループを"コホート"と呼び、そのグループが時間経過でどれだけ残ったかを追う手法。<br><br>個別の月次数字より、"その月の参加者は今でも残っているか"が見えるのが強み。</span></span>：各回の参加者は直近回までどれだけ残ったか</h2>
     <div class="panel">
       <h3>基準回 → 直近回 継続率</h3>
       <div class="desc">過去各開催回の参加者のうち、直近回も来た人の比率</div>
@@ -177,12 +214,69 @@
 
   <!-- セグメント別マトリクス -->
   <section>
-    <h2>開催回 × 流入セグメント（MyASP申込ベース）</h2>
+    <h2>開催回 × 流入<span class="term" tabindex="0" style="color:inherit">セグメント<span class="tip"><b>流入セグメント</b><br>申込者がどの導線から来たかの分類。<br>・<b>メンバー(NFT)</b>：NFT会員専用シナリオ<br>・<b>一般</b>：公開LP / メルマガ経由<br>・<b>LINE</b>：LINE公式アカウント経由<br>・<b>招待</b>：著者・ゲスト経由の特別招待</span></span>（MyASP申込ベース）</h2>
     <div class="panel" style="overflow-x:auto">
       <table id="matrix">
         <thead><tr><th>開催日</th><th>メンバー(NFT)</th><th>一般</th><th>LINE</th><th>招待</th><th>合計(ユニーク)</th></tr></thead>
         <tbody></tbody>
       </table>
+    </div>
+  </section>
+
+  <!-- 用語解説 -->
+  <section>
+    <h2>用語解説</h2>
+    <div class="glossary">
+      <div class="gl-grid">
+        <dl class="gl-item">
+          <dt>F2 転換率</dt>
+          <dd>過去ちょうど1回参加した人のうち、直近回もリピートした比率。
+            <span class="why">▶ 目的：初回→2回目への引き戻し力を測る、新規→定着の入口指標。20-30%が業界目安。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>ロイヤル継続率</dt>
+          <dd>過去2回以上参加した人のうち、直近回もリピートした比率。
+            <span class="why">▶ 目的：固定ファン層の体力を測る。50%超なら健全、70%超ならコミュニティとして強い。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>NPS（Net Promoter Score）</dt>
+          <dd>0-10点での推奨意向アンケートから「推奨者% − 批判者%」で算出する顧客ロイヤルティ指標。
+            <span class="why">▶ 目的：満足度ではなく"他人に勧めたいか"を測る。+50以上で優良、+70以上でワールドクラス。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>コホート分析</dt>
+          <dd>「同じ条件（同じ開催回に参加）」でまとめたグループの、時間経過での残存率を追う手法。
+            <span class="why">▶ 目的：月次の単純な"何人来た"ではなく、"その月の参加者は今でも残っているか"を可視化。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>参加回数階層（Tier）</dt>
+          <dd>直近回の参加者を「新規 / 2回目 / 3回以上」の3層に分解したもの。
+            <span class="why">▶ 目的：コアファンの厚みと、獲得依存度を一目で把握。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>申込ユニーク</dt>
+          <dd>同一メールアドレスを1名としてカウントした実人数（重複除去後）。
+            <span class="why">▶ 目的：1人が複数チャネルから申し込んでも、本来の参加意思のある"人"の単位で正確にカウントする。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>当日参加率</dt>
+          <dd>申込人数に対するZoom当日入室者の比率。
+            <span class="why">▶ 目的：申込から実出席への歩留まりを測る。30%未満は告知過多や日程ミスマッチのサイン。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>ハッシュ化ID</dt>
+          <dd>メールアドレスをHMAC-SHA256で不可逆変換した16文字の識別子。
+            <span class="why">▶ 目的：個人情報を保持せずに「同じ人かどうか」だけを判定可能にし、PIIリスクをゼロにする。</span>
+          </dd>
+        </dl>
+      </div>
     </div>
   </section>
 
