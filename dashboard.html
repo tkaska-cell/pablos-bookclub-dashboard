@@ -37,8 +37,9 @@
   .brand .meta{margin-left:auto;font-size:11px;color:var(--sub)}
 
   .hero{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px;
+    display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px;
   }
+  @media (max-width:1080px){ .hero{grid-template-columns:repeat(3,1fr)} }
   .stat{
     background:var(--card);border:1px solid var(--line);
     border-radius:10px;padding:20px 22px;
@@ -147,6 +148,11 @@
       <div class="num"><span id="loyal">–</span><small>%</small></div>
       <div class="sub">過去2回以上参加者 → 直近回もリピート（<span id="loyalsub"></span>）</div>
     </div>
+    <div class="stat gold">
+      <div class="lbl"><span class="term" tabindex="0">3回連続参加率<span class="tip"><b>直近3回連続参加率</b><br>直近3回（直近回 + その前2回）にすべて参加した人の比率（直近回参加者ベース）。<br><br>「全体でポツポツ3回」ではなく、"連続して通い続けている真のロイヤル"を測る指標。途切れたら脱落とみなすため、ロイヤル継続率より厳しい。</span></span></div>
+      <div class="num"><span id="streak3">–</span><small>%</small></div>
+      <div class="sub"><span id="streak3sub"></span>名が3回連続参加（<span id="streak3dates"></span>）</div>
+    </div>
     <div class="stat">
       <div class="lbl">直近回 <span class="term" tabindex="0">申込ユニーク<span class="tip"><b>申込ユニーク</b><br>同一メールアドレスを1名としてカウント。1人が複数チャネル（NFT/一般/LINE）から申し込んでも1名に名寄せ。</span></span></div>
       <div class="num"><span id="totalLatest">–</span></div>
@@ -241,6 +247,12 @@
           </dd>
         </dl>
         <dl class="gl-item">
+          <dt>3回連続参加率</dt>
+          <dd>直近3回（直近回 + その前2回）にすべて参加した人の比率（直近回参加者ベース）。
+            <span class="why">▶ 目的：「全体でポツポツ3回」ではなく"途切れず通い続けている真のロイヤル"を測る、ロイヤル継続率より厳しい指標。脱落の予兆検知にも使える。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
           <dt>NPS（Net Promoter Score）</dt>
           <dd>0-10点での推奨意向アンケートから「推奨者% − 批判者%」で算出する顧客ロイヤルティ指標。
             <span class="why">▶ 目的：満足度ではなく"他人に勧めたいか"を測る。+50以上で優良、+70以上でワールドクラス。</span>
@@ -306,6 +318,11 @@ Promise.all([
   document.getElementById('f2sub').textContent = `${d.kpi.f2_numerator}/${d.kpi.f2_denominator}名`;
   document.getElementById('loyal').textContent = d.kpi.loyal_rate;
   document.getElementById('loyalsub').textContent = `${d.kpi.loyal_numerator}/${d.kpi.loyal_denominator}名`;
+  if(d.streak3){
+    document.getElementById('streak3').textContent = d.streak3.rate_of_latest;
+    document.getElementById('streak3sub').textContent = d.streak3.count.toLocaleString();
+    document.getElementById('streak3dates').textContent = d.streak3.dates.map(x=>x.slice(5)).join(' → ');
+  }
   document.getElementById('totalLatest').textContent = d.latest.total.toLocaleString();
   document.getElementById('newLatest').textContent = d.latest.new;
   document.getElementById('repLatest').textContent = d.latest.repeat;
@@ -348,13 +365,16 @@ Promise.all([
     options:{ plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,font:{size:11}} } }, cutout:'65%' }
   });
 
-  // === Tier ===
-  const tierLabels = ['新規','2回目','3回以上'];
+  // === Tier (3回以上 を 連続/飛び石 に分解) ===
+  const s3 = d.streak3 || {tier3_consecutive:0, tier3_intermittent:d.tier['3回以上']||0};
   new Chart(document.getElementById('tierChart'), {
     type:'bar',
     data:{
-      labels:tierLabels,
-      datasets:[{ data:tierLabels.map(l=>d.tier[l]||0), backgroundColor:['#1A1A1A','#C8A960','#A88B40'], borderRadius:6 }]
+      labels:['新規','2回目','3回以上(連続)','3回以上(飛び石)'],
+      datasets:[{
+        data:[ d.tier['新規']||0, d.tier['2回目']||0, s3.tier3_consecutive, s3.tier3_intermittent ],
+        backgroundColor:['#1A1A1A','#C8A960','#7B5E1A','#D4C089'], borderRadius:6
+      }]
     },
     options:{ plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
   });

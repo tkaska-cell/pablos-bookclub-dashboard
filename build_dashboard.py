@@ -93,6 +93,19 @@ rep_count = len(repeat_set)
 tier_2 = {h for h in repeat_set if len(history[h]) == 2}
 tier_3p = {h for h in repeat_set if len(history[h]) >= 3}
 
+# 直近3回連続参加（直近イベント+その前2回すべて出席）
+if len(dates) >= 3:
+    last3 = dates[-3:]
+    streak3_set = participants[last3[0]] & participants[last3[1]] & participants[last3[2]]
+else:
+    last3 = dates[:]
+    streak3_set = set()
+streak3_count = len(streak3_set)
+streak3_rate = round(100 * streak3_count / total, 1) if total else 0
+# 3回以上 tier を 連続 vs 飛び石 に分解
+tier_3p_streak = tier_3p & streak3_set
+tier_3p_skip = tier_3p - tier_3p_streak
+
 # F2: 過去ちょうど1回参加 → 今回もリピート
 past_one = {h for h, ds in history.items() if (latest in ds and len(ds) == 2) or (latest not in ds and len(ds) == 1)}
 # 直前回までで1回だけ参加した人を母数に、今回参加したかを見る
@@ -149,6 +162,13 @@ result = {
         "2回目": len(tier_2),
         "3回以上": len(tier_3p),
     },
+    "streak3": {
+        "dates": last3,
+        "count": streak3_count,
+        "rate_of_latest": streak3_rate,
+        "tier3_consecutive": len(tier_3p_streak),
+        "tier3_intermittent": len(tier_3p_skip),
+    },
     "kpi": {
         "f2_rate": f2_rate,
         "f2_numerator": f2_num,
@@ -166,5 +186,6 @@ OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2))
 print(f"✓ {OUT.name} 更新")
 print(f"   F2: {f2_rate}% ({f2_num}/{f2_den})")
 print(f"   ロイヤル: {loyal_rate}% ({loyal_num}/{loyal_den})")
+print(f"   直近3回連続参加: {streak3_count}名 ({streak3_rate}% / 直近回参加者ベース) [{', '.join(last3)}]")
 print(f"   {latest}: {total}名（新規{new_count} / リピート{rep_count}）")
 print(f"   累計ユニーク: {len(history)}名")
