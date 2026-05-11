@@ -57,6 +57,13 @@
   .stat .num{font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
   .stat .num small{font-size:14px;color:var(--sub);font-weight:400;margin-left:4px}
   .stat .sub{font-size:11px;color:var(--sub);margin-top:4px}
+  .stat .target{
+    margin-top:8px;padding-top:8px;border-top:1px dashed #E3D9B8;
+    font-size:11px;color:var(--sub);display:flex;justify-content:space-between;gap:8px;
+  }
+  .stat .target b{color:var(--ink);font-weight:600}
+  .stat .gap-neg{color:var(--warn);font-weight:600}
+  .stat .gap-pos{color:var(--pos);font-weight:600}
   .stat.gold .num{color:#A88B40}
   .stat.gold{background:linear-gradient(135deg,#FFFAEC 0%,#FDF4D7 100%);border-color:#EFE0B0}
 
@@ -152,11 +159,19 @@
       <div class="lbl"><span class="term" tabindex="0">F2 転換率<span class="tip"><b>F2 転換率</b><br>「過去1回だけ参加した人」のうち、直近回もリピートした比率。<br><br>初回参加者をどれだけ"2回目"に引き戻せたかを示す、新規→定着の入口指標。SaaS / 教育サービスでは20-30%が目安。</span></span></div>
       <div class="num"><span id="f2">–</span><small>%</small></div>
       <div class="sub">過去1回参加者 → 直近回もリピート（<span id="f2sub"></span>）</div>
+      <div class="target">
+        <span>目標 <b id="f2tgt">–</b>%（年間継続率60%達成ライン）</span>
+        <span id="f2gap">–</span>
+      </div>
     </div>
     <div class="stat gold">
       <div class="lbl"><span class="term" tabindex="0">ロイヤル継続率<span class="tip"><b>ロイヤル継続率</b><br>「過去2回以上参加した人」のうち、直近回もリピートした比率。<br><br>固定ファン層が離脱せず残っているかを示す、コミュニティの体力指標。50%超なら健全圏。</span></span></div>
       <div class="num"><span id="loyal">–</span><small>%</small></div>
       <div class="sub">過去2回以上参加者 → 直近回もリピート（<span id="loyalsub"></span>）</div>
+      <div class="target">
+        <span>目標 <b id="loyaltgt">–</b>%（年間継続率）</span>
+        <span id="loyalgap">–</span>
+      </div>
     </div>
     <div class="stat gold">
       <div class="lbl"><span class="term" tabindex="0">3回連続参加率<span class="tip"><b>直近3回連続参加率</b><br>直近3回（直近回 + その前2回）にすべて参加した人の比率（直近回参加者ベース）。<br><br>「全体でポツポツ3回」ではなく、"連続して通い続けている真のロイヤル"を測る指標。途切れたら脱落とみなすため、ロイヤル継続率より厳しい。</span></span></div>
@@ -249,12 +264,14 @@
           <dt>F2 転換率</dt>
           <dd>過去ちょうど1回参加した人のうち、直近回もリピートした比率。
             <span class="why">▶ 目的：初回→2回目への引き戻し力を測る、新規→定着の入口指標。20-30%が業界目安。</span>
+            <span class="why">▶ 目標：25〜30%（年間継続率60%を達成するために必要なライン／西村さん設定）</span>
           </dd>
         </dl>
         <dl class="gl-item">
           <dt>ロイヤル継続率</dt>
           <dd>過去2回以上参加した人のうち、直近回もリピートした比率。
             <span class="why">▶ 目的：固定ファン層の体力を測る。50%超なら健全、70%超ならコミュニティとして強い。</span>
+            <span class="why">▶ 目標：60%（年間継続率＝年内リピート率／西村さん設定）</span>
           </dd>
         </dl>
         <dl class="gl-item">
@@ -329,6 +346,23 @@ Promise.all([
   document.getElementById('f2sub').textContent = `${d.kpi.f2_numerator}/${d.kpi.f2_denominator}名`;
   document.getElementById('loyal').textContent = d.kpi.loyal_rate;
   document.getElementById('loyalsub').textContent = `${d.kpi.loyal_numerator}/${d.kpi.loyal_denominator}名`;
+
+  // --- 目標差異（西村さんフィードバック 2026-05-11） ---
+  const fmtGap = v => (v >= 0 ? `+${v.toFixed(1)}pt` : `${v.toFixed(1)}pt`);
+  if (d.kpi.f2_target_min != null) {
+    document.getElementById('f2tgt').textContent = `${d.kpi.f2_target_min}〜${d.kpi.f2_target_stretch}`;
+    const g = d.kpi.f2_gap_to_min;
+    const el = document.getElementById('f2gap');
+    el.textContent = fmtGap(g);
+    el.className = g >= 0 ? 'gap-pos' : 'gap-neg';
+  }
+  if (d.kpi.loyal_target != null) {
+    document.getElementById('loyaltgt').textContent = d.kpi.loyal_target;
+    const g = d.kpi.loyal_gap;
+    const el = document.getElementById('loyalgap');
+    el.textContent = fmtGap(g);
+    el.className = g >= 0 ? 'gap-pos' : 'gap-neg';
+  }
   if(d.streak3){
     document.getElementById('streak3').textContent = d.streak3.rate_of_latest;
     document.getElementById('streak3sub').textContent = d.streak3.count.toLocaleString();
