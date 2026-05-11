@@ -20,3 +20,6 @@ DL進捗管理*
 シナリオ検索リスト.md
 analyze.py
 CSVダウンロード手順.md
+
+# 月次スナップショット（Driveアーカイブ専用）
+snapshots/
