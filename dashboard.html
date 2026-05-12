@@ -264,7 +264,7 @@
           <dt>F2 転換率</dt>
           <dd>過去ちょうど1回参加した人のうち、直近回もリピートした比率。
             <span class="why">▶ 目的：初回→2回目への引き戻し力を測る、新規→定着の入口指標。20-30%が業界目安。</span>
-            <span class="why">▶ 目標：25〜30%（年間継続率60%を達成するために必要なライン／西村さん設定）</span>
+            <span class="why">▶ 目標：25%（年間継続率60%を達成するために必要なライン／西村さん設定）</span>
           </dd>
         </dl>
         <dl class="gl-item">
@@ -349,9 +349,9 @@ Promise.all([
 
   // --- 目標差異（西村さんフィードバック 2026-05-11） ---
   const fmtGap = v => (v >= 0 ? `+${v.toFixed(1)}pt` : `${v.toFixed(1)}pt`);
-  if (d.kpi.f2_target_min != null) {
-    document.getElementById('f2tgt').textContent = `${d.kpi.f2_target_min}〜${d.kpi.f2_target_stretch}`;
-    const g = d.kpi.f2_gap_to_min;
+  if (d.kpi.f2_target != null) {
+    document.getElementById('f2tgt').textContent = d.kpi.f2_target;
+    const g = d.kpi.f2_gap;
     const el = document.getElementById('f2gap');
     el.textContent = fmtGap(g);
     el.className = g >= 0 ? 'gap-pos' : 'gap-neg';

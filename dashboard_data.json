@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11 16:01",
+  "generated_at": "2026-05-12 10:45",
   "period": "2025-07-23 〜 2026-04-23（10回分）",
   "note": "※ 個人情報を含まないハッシュ化済みデータ（HMAC-SHA256・プロジェクト固有salt）から集計。2025年6月26日のシナリオはMyASP上でデータ不整合のため未集計。",
   "matrix": [
@@ -168,9 +168,8 @@
     "f2_rate": 19.9,
     "f2_numerator": 275,
     "f2_denominator": 1382,
-    "f2_target_min": 25.0,
-    "f2_target_stretch": 30.0,
-    "f2_gap_to_min": -5.1,
+    "f2_target": 25.0,
+    "f2_gap": -5.1,
     "loyal_rate": 53.1,
     "loyal_numerator": 181,
     "loyal_denominator": 341,
