@@ -8,8 +8,7 @@ cd "$(dirname "$0")"
 
 DATE_TAG="${1:-$(date +%Y-%m-%d)}"
 SNAPSHOT_PNG="snapshots/${DATE_TAG}_dashboard.png"
-DRIVE_TEAM_ID="0APGoqxH1AJunUk9PVA"                  # AIVEST 共有ドライブ
-DRIVE_DIR="読書会/読書会リピート率/月次スナップショット"
+DRIVE_DIR="05_エキスパート読書会/読書会リピート率/snapshots"   # PABLOSドライブ（tkaska@へ共有済み）
 PORT=8765
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
@@ -49,7 +48,7 @@ fi
 
 echo "▶ 4/4 Driveへアップロード"
 rclone copy "$SNAPSHOT_PNG" "gdrive:${DRIVE_DIR}/" \
-  --drive-team-drive="$DRIVE_TEAM_ID" \
+  --drive-shared-with-me \
   --create-empty-src-dirs
 
 echo

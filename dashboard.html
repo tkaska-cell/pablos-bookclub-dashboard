@@ -42,6 +42,20 @@
     letter-spacing:.03em;background:#fff;transition:all .15s ease;
   }
   .brand .archive-link:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .brand .archive-dropdown{position:relative;list-style:none}
+  .brand .archive-dropdown summary{list-style:none;cursor:pointer}
+  .brand .archive-dropdown summary::-webkit-details-marker{display:none}
+  .brand .archive-dropdown ul{
+    position:absolute;right:0;top:calc(100% + 6px);margin:0;padding:8px 0;
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);list-style:none;min-width:280px;z-index:100;
+  }
+  .brand .archive-dropdown li{padding:0}
+  .brand .archive-dropdown li a{
+    display:block;padding:8px 16px;color:var(--ink);text-decoration:none;font-size:12px;
+  }
+  .brand .archive-dropdown li a:hover{background:#f6f3ee;color:var(--accent)}
+  .brand .archive-dropdown li a.folder-link{border-top:1px solid var(--line);margin-top:4px;padding-top:10px;color:var(--accent2);font-weight:600}
 
   .hero{
     display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px;
@@ -146,7 +160,15 @@
     <span class="logo">PABLOS</span>
     <h1>エキスパート読書会 ダッシュボード</h1>
     <div class="meta">
-      <a class="archive-link" href="https://drive.google.com/drive/folders/1B97qqS8kHIh2pTkJHAQw4rl3oCATpGHW" target="_blank" rel="noopener">📂 過去のレポート →</a>
+      <details class="archive-dropdown">
+        <summary class="archive-link">📂 過去のレポート ▾</summary>
+        <ul>
+          <li><a href="https://drive.google.com/file/d/1XXo1mEm9NDLGihL2RWPMOORxN_AL7-0F/view" target="_blank" rel="noopener">2026-05-17（5月読書会反映後・最新）</a></li>
+          <li><a href="https://drive.google.com/file/d/1eiNIBp87-9ce0Z-oYs2JqwPfSN2Sa9av/view" target="_blank" rel="noopener">2026-05-12（4月までデータ）</a></li>
+          <li><a href="https://drive.google.com/file/d/11vADz-w-WBek2X1lIQ4uwg9pIaqfUxgC/view" target="_blank" rel="noopener">2026-05-11（初回スナップショット）</a></li>
+          <li><a href="https://drive.google.com/drive/folders/13O6s2W68W3fZQycQjdaHhljAEb7Gice4" target="_blank" rel="noopener" class="folder-link">📂 すべて見る →</a></li>
+        </ul>
+      </details>
       <span>更新: <span id="genDate"></span></span>
     </div>
   </div>
