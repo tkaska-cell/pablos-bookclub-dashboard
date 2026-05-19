@@ -256,7 +256,7 @@
       <table id="monthTable">
         <thead>
           <tr>
-            <th>月</th><th>テーマ／著書</th><th>ファシリ</th>
+            <th>月</th><th>テーマ／著書</th><th>ファシリ</th><th>インタビュアー</th>
             <th>申込</th><th>当日参加</th><th>参加率</th><th>NPS</th>
           </tr>
         </thead>
@@ -469,13 +469,14 @@ Promise.all([
   // === Monthly table ===
   const tb = document.querySelector('#monthTable tbody');
   ['2025','2026'].forEach(y=>{
-    tb.insertAdjacentHTML('beforeend', `<tr class="year-divider"><td colspan="7">${y}年（平均: 申込${sheet.yearly[y].average.申込人数} / 当日${sheet.yearly[y].average.当日参加} / 参加率${sheet.yearly[y].average.当日参加率.toFixed(1)}% / NPS${sheet.yearly[y].average.NPS}）</td></tr>`);
+    tb.insertAdjacentHTML('beforeend', `<tr class="year-divider"><td colspan="8">${y}年（平均: 申込${sheet.yearly[y].average.申込人数} / 当日${sheet.yearly[y].average.当日参加} / 参加率${sheet.yearly[y].average.当日参加率.toFixed(1)}% / NPS${sheet.yearly[y].average.NPS}）</td></tr>`);
     sheet.yearly[y].monthly.forEach(m=>{
       tb.insertAdjacentHTML('beforeend', `
         <tr class="month-row">
           <td>${m.month}</td>
           <td><span class="ttl">${m.title || '–'}</span></td>
           <td>${m.facilitator || '–'}</td>
+          <td>${m.interviewer || '–'}</td>
           <td>${m.申込人数 ?? '–'}</td>
           <td>${m.当日参加 ?? '–'}</td>
           <td>${m.当日参加率 != null ? m.当日参加率.toFixed(1)+'%' : '–'}</td>
