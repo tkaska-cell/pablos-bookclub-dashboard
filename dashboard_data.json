@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 17:44",
+  "generated_at": "2026-06-25 18:36",
   "period": "2025-07-23 〜 2026-06-23（12回分）",
   "note": "※ 個人情報を含まないハッシュ化済みデータ（HMAC-SHA256・プロジェクト固有salt）から集計。2025年6月26日のシナリオはMyASP上でデータ不整合のため未集計。",
   "matrix": [
@@ -85,9 +85,9 @@
     },
     {
       "date": "2026-05-15",
-      "total": 201,
+      "total": 411,
       "メンバー(NFT)": 0,
-      "一般": 201,
+      "一般": 411,
       "LINE": 0,
       "招待": 0
     },
@@ -163,23 +163,23 @@
     },
     {
       "date": "2026-05-15",
-      "base": 201,
-      "continued": 100,
-      "rate": 49.8
+      "base": 411,
+      "continued": 159,
+      "rate": 38.7
     }
   ],
   "latest": {
     "date": "2026-06-23",
     "total": 458,
-    "new": 149,
-    "repeat": 309,
-    "new_pct": 32.5,
-    "repeat_pct": 67.5
+    "new": 136,
+    "repeat": 322,
+    "new_pct": 29.7,
+    "repeat_pct": 70.3
   },
   "tier": {
-    "新規": 149,
-    "2回目": 110,
-    "3回以上": 199
+    "新規": 136,
+    "2回目": 109,
+    "3回以上": 213
   },
   "streak3": {
     "dates": [
@@ -187,24 +187,24 @@
       "2026-05-15",
       "2026-06-23"
     ],
-    "count": 85,
-    "rate_of_latest": 18.6,
-    "tier3_consecutive": 85,
-    "tier3_intermittent": 114
+    "count": 121,
+    "rate_of_latest": 26.4,
+    "tier3_consecutive": 121,
+    "tier3_intermittent": 92
   },
   "kpi": {
-    "f2_rate": 6.6,
-    "f2_numerator": 110,
-    "f2_denominator": 1665,
+    "f2_rate": 6.4,
+    "f2_numerator": 109,
+    "f2_denominator": 1703,
     "f2_target": 25.0,
-    "f2_gap": -18.4,
+    "f2_gap": -18.6,
     "loyal_rate": 29.4,
-    "loyal_numerator": 199,
-    "loyal_denominator": 676,
+    "loyal_numerator": 213,
+    "loyal_denominator": 725,
     "loyal_target": 60.0,
     "loyal_gap": -30.6
   },
   "totals": {
-    "cumulative_unique": 2490
+    "cumulative_unique": 2564
   }
 }
