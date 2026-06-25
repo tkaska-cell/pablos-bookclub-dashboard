@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-19 11:04",
-  "period": "2025-07-23 〜 2026-04-23（10回分）",
+  "generated_at": "2026-06-25 11:30",
+  "period": "2025-07-23 〜 2026-05-15（11回分）",
   "note": "※ 個人情報を含まないハッシュ化済みデータ（HMAC-SHA256・プロジェクト固有salt）から集計。2025年6月26日のシナリオはMyASP上でデータ不整合のため未集計。",
   "matrix": [
     {
@@ -82,101 +82,115 @@
       "一般": 972,
       "LINE": 0,
       "招待": 0
+    },
+    {
+      "date": "2026-05-15",
+      "total": 201,
+      "メンバー(NFT)": 0,
+      "一般": 201,
+      "LINE": 0,
+      "招待": 0
     }
   ],
   "cohort_to_latest": [
     {
       "date": "2025-07-23",
       "base": 33,
-      "continued": 7,
-      "rate": 21.2
+      "continued": 2,
+      "rate": 6.1
     },
     {
       "date": "2025-08-28",
       "base": 52,
-      "continued": 16,
-      "rate": 30.8
+      "continued": 4,
+      "rate": 7.7
     },
     {
       "date": "2025-09-10",
       "base": 67,
-      "continued": 16,
-      "rate": 23.9
+      "continued": 4,
+      "rate": 6.0
     },
     {
       "date": "2025-09-19",
       "base": 56,
-      "continued": 18,
-      "rate": 32.1
+      "continued": 9,
+      "rate": 16.1
     },
     {
       "date": "2025-10-21",
       "base": 63,
-      "continued": 23,
-      "rate": 36.5
+      "continued": 9,
+      "rate": 14.3
     },
     {
       "date": "2025-12-03",
       "base": 303,
-      "continued": 101,
-      "rate": 33.3
+      "continued": 28,
+      "rate": 9.2
     },
     {
       "date": "2026-01-27",
       "base": 94,
-      "continued": 50,
-      "rate": 53.2
+      "continued": 19,
+      "rate": 20.2
     },
     {
       "date": "2026-02-18",
       "base": 595,
-      "continued": 200,
-      "rate": 33.6
+      "continued": 73,
+      "rate": 12.3
     },
     {
       "date": "2026-03-18",
       "base": 984,
-      "continued": 324,
-      "rate": 32.9
+      "continued": 102,
+      "rate": 10.4
+    },
+    {
+      "date": "2026-04-23",
+      "base": 1047,
+      "continued": 154,
+      "rate": 14.7
     }
   ],
   "latest": {
-    "date": "2026-04-23",
-    "total": 1047,
-    "new": 591,
-    "repeat": 456,
-    "new_pct": 56.4,
-    "repeat_pct": 43.6
+    "date": "2026-05-15",
+    "total": 201,
+    "new": 27,
+    "repeat": 174,
+    "new_pct": 13.4,
+    "repeat_pct": 86.6
   },
   "tier": {
-    "新規": 591,
-    "2回目": 275,
-    "3回以上": 181
+    "新規": 27,
+    "2回目": 60,
+    "3回以上": 114
   },
   "streak3": {
     "dates": [
-      "2026-02-18",
       "2026-03-18",
-      "2026-04-23"
+      "2026-04-23",
+      "2026-05-15"
     ],
-    "count": 122,
-    "rate_of_latest": 11.7,
-    "tier3_consecutive": 122,
-    "tier3_intermittent": 59
+    "count": 91,
+    "rate_of_latest": 45.3,
+    "tier3_consecutive": 91,
+    "tier3_intermittent": 23
   },
   "kpi": {
-    "f2_rate": 19.9,
-    "f2_numerator": 275,
-    "f2_denominator": 1382,
+    "f2_rate": 3.5,
+    "f2_numerator": 60,
+    "f2_denominator": 1698,
     "f2_target": 25.0,
-    "f2_gap": -5.1,
-    "loyal_rate": 53.1,
-    "loyal_numerator": 181,
-    "loyal_denominator": 341,
+    "f2_gap": -21.5,
+    "loyal_rate": 18.5,
+    "loyal_numerator": 114,
+    "loyal_denominator": 616,
     "loyal_target": 60.0,
-    "loyal_gap": -6.9
+    "loyal_gap": -41.5
   },
   "totals": {
-    "cumulative_unique": 2314
+    "cumulative_unique": 2341
   }
 }
