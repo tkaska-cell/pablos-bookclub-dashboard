@@ -14,9 +14,19 @@ ROOT = Path(__file__).parent
 SRC = ROOT / "data" / "readers_anon.csv"
 OUT = ROOT / "dashboard_data.json"
 
+# 目標値（西村さんフィードバック 2026-05-11: F2≥25%＆年間継続率≥60% でないと年次リピートが回らない）
+TARGETS = {
+    "f2_rate": 25.0,        # F2転換率目標
+    "loyal_rate": 60.0,     # ロイヤル（年間継続率）目標
+}
+
 # シナリオ名 → (date, segment) マッピング
 EVENT_PATTERNS = [
     # 2026
+    (re.compile(r"感性のある人が習慣にしていること.*8月21日"), ("2026-08-21", "一般")),
+    (re.compile(r"いつも機嫌よくいられる本.*7月17日"), ("2026-07-17", "一般")),
+    (re.compile(r"正しい答えを導くための疑う思考.*6月23日"), ("2026-06-23", "一般")),
+    (re.compile(r"半うつ.*5月15日"), ("2026-05-15", "一般")),
     (re.compile(r"本とAIで自分の価値.*4月23日"), ("2026-04-23", "一般")),
     (re.compile(r"エキスパート読書会4月23日"), ("2026-04-23", "メンバー(NFT)")),
     (re.compile(r"2026年3月18日.*著者"), ("2026-03-18", "招待")),
@@ -173,9 +183,13 @@ result = {
         "f2_rate": f2_rate,
         "f2_numerator": f2_num,
         "f2_denominator": f2_den,
+        "f2_target": TARGETS["f2_rate"],
+        "f2_gap": round(f2_rate - TARGETS["f2_rate"], 1),
         "loyal_rate": loyal_rate,
         "loyal_numerator": loyal_num,
         "loyal_denominator": loyal_den,
+        "loyal_target": TARGETS["loyal_rate"],
+        "loyal_gap": round(loyal_rate - TARGETS["loyal_rate"], 1),
     },
     "totals": {
         "cumulative_unique": len(history),

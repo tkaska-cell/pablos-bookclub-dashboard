@@ -152,6 +152,9 @@
     .grid2,.grid3{grid-template-columns:1fr}
     .wrap{padding:28px 16px 60px}
   }
+  .asof{display:inline-block;margin:6px 0 0;padding:4px 12px;border-radius:999px;
+    background:#f3ede1;color:#6b5a3e;font-size:13px;font-weight:700;letter-spacing:.02em;}
+  .asof small{font-weight:400;opacity:.75;}
 </style>
 </head>
 <body>
@@ -159,6 +162,7 @@
   <div class="brand">
     <span class="logo">PABLOS</span>
     <h1>エキスパート読書会 ダッシュボード</h1>
+    <div id="asOf" class="asof">–</div>
     <div class="meta">
       <details class="archive-dropdown">
         <summary class="archive-link">📂 過去のレポート ▾</summary>
@@ -206,9 +210,9 @@
       <div class="sub">新規 <span id="newLatest"></span>名 / リピート <span id="repLatest"></span>名（<span id="latestDate"></span>）</div>
     </div>
     <div class="stat">
-      <div class="lbl"><span class="term" tabindex="0">累計ユニーク参加者<span class="tip"><b>累計ユニーク参加者</b><br>過去10回分の全申込者を、メールアドレス単位で重複排除した実人数。同じ人が3回参加していても1名としてカウント。</span></span></div>
+      <div class="lbl"><span class="term" tabindex="0">累計ユニーク参加者<span class="tip"><b>累計ユニーク参加者</b><br>対象期間の全申込者を、メールアドレス単位で重複排除した実人数。同じ人が3回参加していても1名としてカウント。</span></span></div>
       <div class="num"><span id="cumul">–</span></div>
-      <div class="sub"><span id="cumulPeriod"></span>（10回分）</div>
+      <div class="sub"><span id="cumulPeriod"></span>（<span id="cumulCount"></span>）</div>
     </div>
   </div>
 
@@ -216,8 +220,8 @@
   <section>
     <h2>月次推移：申込人数・当日参加・<span class="term" tabindex="0" style="color:inherit">NPS<span class="tip"><b>NPS（Net Promoter Score）</b><br>「この読書会を友人に勧めたいか」を0-10点で聞き、「推奨者(9-10)% − 批判者(0-6)%」で算出する顧客ロイヤルティ指標。<br><br>+50以上で優良、+70以上でワールドクラス水準。</span></span></h2>
     <div class="panel">
-      <h3>2025年1月 〜 2026年4月</h3>
-      <div class="desc">スプレッドシート（Zoom登録ベース） × NPSアンケート集計</div>
+      <h3 id="metricsRange">–</h3>
+      <div class="desc">NPS,CES比較シート（申込＝嘉藤さん集客集計シート） × NPSアンケート集計</div>
       <canvas id="trendChart" height="120"></canvas>
     </div>
   </section>
@@ -363,6 +367,18 @@ Promise.all([
   // === HERO ===
   document.getElementById('genDate').textContent = d.generated_at;
   document.getElementById('period').textContent = d.period;
+  // 最新開催回バッジ（このダッシュボードが「いつ時点か」を明示）
+  (function(){
+    var L=d.latest||{}, el=document.getElementById('asOf');
+    if(el&&L.date){ el.innerHTML='📊 '+L.date+' 開催回 時点の集計 <small>／ 直近回の申込 '+(L.total||'-')+'名</small>'; }
+    // 月次推移の期間見出しをデータから生成
+    var mr=document.getElementById('metricsRange');
+    if(mr&&window.__metricsRange){ mr.textContent=window.__metricsRange; }
+    // 累計の「N回分」を period から抽出
+    var cc=document.getElementById('cumulCount');
+    var m=(d.period||'').match(/（(.+?)）/);
+    if(cc&&m){ cc.textContent=m[1]; }
+  })();
   document.getElementById('note').textContent = d.note;
   document.getElementById('f2').textContent = d.kpi.f2_rate;
   document.getElementById('f2sub').textContent = `${d.kpi.f2_numerator}/${d.kpi.f2_denominator}名`;
@@ -402,6 +418,14 @@ Promise.all([
   ['2025','2026'].forEach(y=>{
     sheet.yearly[y].monthly.forEach(m=>months.push({...m, year:y}));
   });
+  // 期間見出しをデータの最初と最後から生成（ハードコード禁止）
+  (function(){
+    var mr=document.getElementById('metricsRange');
+    if(mr&&months.length){
+      var a=months[0], b=months[months.length-1];
+      mr.textContent = a.year+'年'+a.month+' 〜 '+b.year+'年'+b.month;
+    }
+  })();
   new Chart(document.getElementById('trendChart'), {
     data: {
       labels: months.map(m=>`${m.year.slice(2)}/${m.month}`),
