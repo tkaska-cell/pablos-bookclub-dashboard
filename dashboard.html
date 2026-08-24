@@ -163,6 +163,7 @@
     <span class="logo">PABLOS</span>
     <h1>エキスパート読書会 ダッシュボード</h1>
     <div id="asOf" class="asof">–</div>
+    <div class="asof-note" style="margin:8px 0 0;padding:8px 12px;background:#fff8e1;border-left:4px solid #f0a500;border-radius:4px;font-size:13px;line-height:1.7;color:#5a4500;">⚠️ 本ダッシュボードのKPI（F2転換率・ロイヤル継続率・3回連続申込率・コホート）は<b>すべて「申込ベース」</b>です。当日Zoomに参加したかは含みません。<br>当日参加の実数は「月次推移」グラフをご覧ください。</div>
     <div class="meta">
       <details class="archive-dropdown">
         <summary class="archive-link">📂 過去のレポート ▾</summary>
@@ -182,9 +183,9 @@
   <!-- HERO KPI -->
   <div class="hero">
     <div class="stat gold">
-      <div class="lbl"><span class="term" tabindex="0">F2 転換率<span class="tip"><b>F2 転換率</b><br>「過去1回だけ参加した人」のうち、直近回もリピートした比率。<br><br>初回参加者をどれだけ"2回目"に引き戻せたかを示す、新規→定着の入口指標。SaaS / 教育サービスでは20-30%が目安。</span></span></div>
+      <div class="lbl"><span class="term" tabindex="0">F2 転換率<span class="tip"><b>F2 転換率</b><br>「過去1回だけ申込した人」のうち、直近回も申込した比率。<br><br>初回申込者をどれだけ"2回目"に引き戻せたかを示す、新規→定着の入口指標。SaaS / 教育サービスでは20-30%が目安。</span></span></div>
       <div class="num"><span id="f2">–</span><small>%</small></div>
-      <div class="sub">過去1回参加者 → 直近回もリピート（<span id="f2sub"></span>）</div>
+      <div class="sub">過去1回申込 → 直近回も申込（<span id="f2sub"></span>）</div>
       <div class="target">
         <span>目標 <b id="f2tgt">–</b>%（年間継続率60%達成ライン）</span>
         <span id="f2gap">–</span>
@@ -193,14 +194,14 @@
     <div class="stat gold">
       <div class="lbl"><span class="term" tabindex="0">ロイヤル継続率<span class="tip"><b>ロイヤル継続率</b><br>「過去2回以上参加した人」のうち、直近回もリピートした比率。<br><br>固定ファン層が離脱せず残っているかを示す、コミュニティの体力指標。50%超なら健全圏。</span></span></div>
       <div class="num"><span id="loyal">–</span><small>%</small></div>
-      <div class="sub">過去2回以上参加者 → 直近回もリピート（<span id="loyalsub"></span>）</div>
+      <div class="sub">過去2回以上申込 → 直近回も申込（<span id="loyalsub"></span>）</div>
       <div class="target">
         <span>目標 <b id="loyaltgt">–</b>%（年間継続率）</span>
         <span id="loyalgap">–</span>
       </div>
     </div>
     <div class="stat gold">
-      <div class="lbl"><span class="term" tabindex="0">3回連続参加率<span class="tip"><b>直近3回連続参加率</b><br>直近3回（直近回 + その前2回）にすべて参加した人の比率（直近回参加者ベース）。<br><br>「全体でポツポツ3回」ではなく、"連続して通い続けている真のロイヤル"を測る指標。途切れたら脱落とみなすため、ロイヤル継続率より厳しい。</span></span></div>
+      <div class="lbl"><span class="term" tabindex="0">3回連続申込率<span class="tip"><b>直近3回連続申込率</b><br>直近3回（直近回 + その前2回）にすべて申込した人の比率（直近回の申込者ベース）。<br><br>「全体でポツポツ3回」ではなく、"連続して通い続けている真のロイヤル"を測る指標。途切れたら脱落とみなすため、ロイヤル継続率より厳しい。</span></span></div>
       <div class="num"><span id="streak3">–</span><small>%</small></div>
       <div class="sub"><span id="streak3sub"></span>名が3回連続参加（<span id="streak3dates"></span>）</div>
     </div>
@@ -210,7 +211,7 @@
       <div class="sub">新規 <span id="newLatest"></span>名 / リピート <span id="repLatest"></span>名（<span id="latestDate"></span>）</div>
     </div>
     <div class="stat">
-      <div class="lbl"><span class="term" tabindex="0">累計ユニーク参加者<span class="tip"><b>累計ユニーク参加者</b><br>対象期間の全申込者を、メールアドレス単位で重複排除した実人数。同じ人が3回参加していても1名としてカウント。</span></span></div>
+      <div class="lbl"><span class="term" tabindex="0">累計ユニーク申込者<span class="tip"><b>累計ユニーク申込者</b><br>対象期間の全申込者を、メールアドレス単位で重複排除した実人数。同じ人が3回申し込んでいても1名としてカウント。</span></span></div>
       <div class="num"><span id="cumul">–</span></div>
       <div class="sub"><span id="cumulPeriod"></span>（<span id="cumulCount"></span>）</div>
     </div>
@@ -228,16 +229,16 @@
 
   <!-- リピート構成 -->
   <section>
-    <h2>直近回の参加者構成（<span class="term" tabindex="0" style="color:inherit">ハッシュ化ID<span class="tip"><b>ハッシュ化ID</b><br>メールアドレスをHMAC-SHA256で不可逆変換した16文字の識別子。同じ人は同じIDになるが、IDから元のメアドは復元不能。<br><br>個人情報を保持せずにリピート判定を可能にする手法。</span></span>ベース）</h2>
+    <h2>直近回の申込者構成（<span class="term" tabindex="0" style="color:inherit">ハッシュ化ID<span class="tip"><b>ハッシュ化ID</b><br>メールアドレスをHMAC-SHA256で不可逆変換した16文字の識別子。同じ人は同じIDになるが、IDから元のメアドは復元不能。<br><br>個人情報を保持せずにリピート判定を可能にする手法。</span></span>ベース）</h2>
     <div class="grid2">
       <div class="panel">
         <h3>新規 vs リピート</h3>
-        <div class="desc">直近回参加者を、過去出現の有無で分類</div>
+        <div class="desc">直近回の申込者を、過去出現の有無で分類</div>
         <canvas id="newRepeat"></canvas>
       </div>
       <div class="panel">
-        <h3>参加回数の<span class="term" tabindex="0">階層<span class="tip"><b>参加回数階層（Tier）</b><br>直近回の参加者を「新規 / 2回目 / 3回以上」の3層に分けたもの。<br><br>3回以上層が多いほどコアファンが厚い証拠。新規層が極端に多い場合は獲得頼みでリピートが追いついていない可能性。</span></span></h3>
-        <div class="desc">直近回の参加者を、累計参加回数で3階層に分解</div>
+        <h3>申込回数の<span class="term" tabindex="0">階層<span class="tip"><b>申込回数階層（Tier）</b><br>直近回の申込者を「新規 / 2回目 / 3回以上」の3層に分けたもの。<br><br>3回以上層が多いほどコアファンが厚い証拠。新規層が極端に多い場合は獲得頼みでリピートが追いついていない可能性。</span></span></h3>
+        <div class="desc">直近回の申込者を、累計申込回数で3階層に分解</div>
         <canvas id="tierChart"></canvas>
       </div>
     </div>
@@ -245,10 +246,10 @@
 
   <!-- コホート -->
   <section>
-    <h2><span class="term" tabindex="0" style="color:inherit">コホート分析<span class="tip"><b>コホート分析</b><br>同じ条件（ここでは「同じ開催回に参加した」）でまとめたグループを"コホート"と呼び、そのグループが時間経過でどれだけ残ったかを追う手法。<br><br>個別の月次数字より、"その月の参加者は今でも残っているか"が見えるのが強み。</span></span>：各回の参加者は直近回までどれだけ残ったか</h2>
+    <h2><span class="term" tabindex="0" style="color:inherit">コホート分析<span class="tip"><b>コホート分析</b><br>同じ条件（ここでは「同じ開催回に参加した」）でまとめたグループを"コホート"と呼び、そのグループが時間経過でどれだけ残ったかを追う手法。<br><br>個別の月次数字より、"その月の申込者は今でも残っているか"が見えるのが強み。</span></span>：各回の申込者は直近回までどれだけ残ったか</h2>
     <div class="panel">
       <h3>基準回 → 直近回 継続率</h3>
-      <div class="desc">過去各開催回の参加者のうち、直近回も来た人の比率</div>
+      <div class="desc">過去各開催回の申込者のうち、直近回も申込した人の比率</div>
       <canvas id="cohortChart"></canvas>
     </div>
   </section>
@@ -301,8 +302,8 @@
           </dd>
         </dl>
         <dl class="gl-item">
-          <dt>3回連続参加率</dt>
-          <dd>直近3回（直近回 + その前2回）にすべて参加した人の比率（直近回参加者ベース）。
+          <dt>3回連続申込率</dt>
+          <dd>直近3回（直近回 + その前2回）にすべて申込した人の比率（直近回の申込者ベース）。
             <span class="why">▶ 目的：「全体でポツポツ3回」ではなく"途切れず通い続けている真のロイヤル"を測る、ロイヤル継続率より厳しい指標。脱落の予兆検知にも使える。</span>
           </dd>
         </dl>
@@ -315,12 +316,12 @@
         <dl class="gl-item">
           <dt>コホート分析</dt>
           <dd>「同じ条件（同じ開催回に参加）」でまとめたグループの、時間経過での残存率を追う手法。
-            <span class="why">▶ 目的：月次の単純な"何人来た"ではなく、"その月の参加者は今でも残っているか"を可視化。</span>
+            <span class="why">▶ 目的：月次の単純な"何人来た"ではなく、"その月の申込者は今でも残っているか"を可視化。</span>
           </dd>
         </dl>
         <dl class="gl-item">
-          <dt>参加回数階層（Tier）</dt>
-          <dd>直近回の参加者を「新規 / 2回目 / 3回以上」の3層に分解したもの。
+          <dt>申込回数階層（Tier）</dt>
+          <dd>直近回の申込者を「新規 / 2回目 / 3回以上」の3層に分解したもの。
             <span class="why">▶ 目的：コアファンの厚みと、獲得依存度を一目で把握。</span>
           </dd>
         </dl>
@@ -370,7 +371,15 @@ Promise.all([
   // 最新開催回バッジ（このダッシュボードが「いつ時点か」を明示）
   (function(){
     var L=d.latest||{}, el=document.getElementById('asOf');
-    if(el&&L.date){ el.innerHTML='📊 '+L.date+' 開催回 時点の集計 <small>／ 直近回の申込 '+(L.total||'-')+'名</small>'; }
+    var _ms=[]; ['2025','2026'].forEach(function(y){ ((sheet.yearly[y]||{}).monthly||[]).forEach(function(m){_ms.push(m);}); });
+    var _last=_ms.length?_ms[_ms.length-1]:{};
+    if(el&&L.date){
+      var _app=_last['申込人数'], _att=_last['当日参加'];
+      el.innerHTML='📊 '+L.date+' 開催回 時点の集計 <small>／ 申込 '
+        +(_app?_app.toLocaleString():'-')+'名'
+        +(L.total?'（重複除去 '+L.total.toLocaleString()+'名）':'')
+        +(_att?' ／ 当日参加 '+_att.toLocaleString()+'名':'')+'</small>';
+    }
     // 月次推移の期間見出しをデータから生成
     var mr=document.getElementById('metricsRange');
     if(mr&&window.__metricsRange){ mr.textContent=window.__metricsRange; }
