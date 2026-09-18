@@ -2,6 +2,7 @@
 csv/
 data/.salt
 data/readers_anon.csv
+data/attendance_anon.csv
 *.csv.bak
 /tmp/
 *_cookie.txt

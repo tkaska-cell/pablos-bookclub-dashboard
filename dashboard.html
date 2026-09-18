@@ -163,12 +163,17 @@
     <span class="logo">PABLOS</span>
     <h1>エキスパート読書会 ダッシュボード</h1>
     <div id="asOf" class="asof">–</div>
-    <div class="asof-note" style="margin:8px 0 0;padding:8px 12px;background:#fff8e1;border-left:4px solid #f0a500;border-radius:4px;font-size:13px;line-height:1.7;color:#5a4500;">⚠️ 本ダッシュボードのKPI（F2転換率・ロイヤル継続率・3回連続申込率・コホート）は<b>すべて「申込ベース」</b>です。当日Zoomに参加したかは含みません。<br>当日参加の実数は「月次推移」グラフをご覧ください。</div>
+    <div class="asof-note" style="margin:8px 0 0;padding:8px 12px;background:#fff8e1;border-left:4px solid #f0a500;border-radius:4px;font-size:13px;line-height:1.7;color:#5a4500;">⚠️ 本ダッシュボードのKPI（F2転換率・ロイヤル継続率・3回連続申込率・コホート）は<b>すべて「申込ベース」</b>です（「参加 vs 不参加」セクションを除く）。当日Zoomに参加したかは含みません。<br>当日参加の実数は「月次推移」グラフをご覧ください。</div>
     <div class="meta">
       <details class="archive-dropdown">
         <summary class="archive-link">📂 過去のレポート ▾</summary>
         <ul>
-          <li><a href="https://drive.google.com/file/d/1XXo1mEm9NDLGihL2RWPMOORxN_AL7-0F/view" target="_blank" rel="noopener">2026-05-17（5月読書会反映後・最新）</a></li>
+          <!-- ARCHIVE_LIST_TOP: update_month.sh がここへ最新スナップショットを自動挿入する -->
+          <li><a href="https://drive.google.com/file/d/1ji7R-5jTyZIWyJmC7k4tpS3n0_GFIPLh/view" target="_blank" rel="noopener">2026-09-18（9月読書会反映後）</a></li>
+          <li><a href="https://drive.google.com/file/d/1pjtC3wrkcgOC7ouzauqE1m5UNmKafX0V/view" target="_blank" rel="noopener">2026-08-24（8月読書会反映後）</a></li>
+          <li><a href="https://drive.google.com/file/d/1fyqQh4WH-UOiJKzYAkEcpYCsXTqznA3n/view" target="_blank" rel="noopener">2026-07-19（7月読書会反映後）</a></li>
+          <li><a href="https://drive.google.com/file/d/1aa0u8hEZ4VAHw8XdfY8ve_o97n1E0zYk/view" target="_blank" rel="noopener">2026-06-25（6月読書会反映後）</a></li>
+          <li><a href="https://drive.google.com/file/d/1XXo1mEm9NDLGihL2RWPMOORxN_AL7-0F/view" target="_blank" rel="noopener">2026-05-17（5月読書会反映後）</a></li>
           <li><a href="https://drive.google.com/file/d/1eiNIBp87-9ce0Z-oYs2JqwPfSN2Sa9av/view" target="_blank" rel="noopener">2026-05-12（4月までデータ）</a></li>
           <li><a href="https://drive.google.com/file/d/11vADz-w-WBek2X1lIQ4uwg9pIaqfUxgC/view" target="_blank" rel="noopener">2026-05-11（初回スナップショット）</a></li>
           <li><a href="https://drive.google.com/drive/folders/13O6s2W68W3fZQycQjdaHhljAEb7Gice4" target="_blank" rel="noopener" class="folder-link">📂 すべて見る →</a></li>
@@ -251,6 +256,23 @@
       <h3>基準回 → 直近回 継続率</h3>
       <div class="desc">過去各開催回の申込者のうち、直近回も申込した人の比率</div>
       <canvas id="cohortChart"></canvas>
+    </div>
+  </section>
+
+  <!-- 参加 vs 不参加（実参加ベース） -->
+  <section id="attendanceSection" style="display:none">
+    <h2>参加 vs 不参加（Zoomリアルタイム接続ベース）</h2>
+    <div class="panel" style="overflow-x:auto">
+      <div class="desc" style="margin-bottom:12px">このセクションのみ<b>実参加ベース</b>（Zoom参加実績×MyASP突合、開催翌日にラベル付与）。突合できない分は未特定として不参加側に含む。</div>
+      <table id="attendanceTable">
+        <thead>
+          <tr>
+            <th>回</th><th>申込</th><th>参加</th><th>参加率</th>
+            <th>参加者の次回申込率</th><th>不参加者の次回申込率</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </section>
 
@@ -480,6 +502,27 @@ Promise.all([
   });
 
   // === Cohort ===
+  // === 参加 vs 不参加（実参加ベース。データが無ければセクションごと非表示） ===
+  (function(){
+    var att = d.attendance;
+    if(!att || !att.events || !att.events.length) return;
+    var sec = document.getElementById('attendanceSection');
+    var tb  = document.querySelector('#attendanceTable tbody');
+    var cell = function(r){
+      if(!r) return '<td style="text-align:right;color:#999">—</td>';
+      return '<td style="text-align:right">'+r.rate.toFixed(1)+'% <small style="color:#888">('
+             +r.numerator+'/'+r.denominator+')</small></td>';
+    };
+    tb.innerHTML = att.events.map(function(e){
+      return '<tr><td>'+e.date+'</td>'
+        +'<td style="text-align:right">'+e.applicants.toLocaleString()+'</td>'
+        +'<td style="text-align:right">'+e.attended.toLocaleString()+'</td>'
+        +'<td style="text-align:right">'+(e.attendance_rate==null?'—':e.attendance_rate.toFixed(1)+'%')+'</td>'
+        +cell(e.attended_next)+cell(e.absent_next)+'</tr>';
+    }).join('');
+    sec.style.display = '';
+  })();
+
   new Chart(document.getElementById('cohortChart'), {
     data:{
       labels:d.cohort_to_latest.map(c=>c.date),
