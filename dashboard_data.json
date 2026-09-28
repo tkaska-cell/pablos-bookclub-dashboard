@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-18 17:17",
+  "generated_at": "2026-09-28 18:33",
   "period": "2025-07-23 〜 2026-09-16（15回分）",
   "note": "※ 個人情報を含まないハッシュ化済みデータ（HMAC-SHA256・プロジェクト固有salt）から集計。2025年6月26日のシナリオはMyASP上でデータ不整合のため未集計。",
   "matrix": [
@@ -248,5 +248,78 @@
   },
   "totals": {
     "cumulative_unique": 3601
+  },
+  "attendance": {
+    "note": "Zoom滞在合計30分以上（2026-09-28確定）× MyASP申込者の突合（開催翌日にラベル付与）。突合できない分は未特定として不参加側に含む。",
+    "events": [
+      {
+        "date": "2026-07-17",
+        "applicants": 470,
+        "attended": 122,
+        "absent": 351,
+        "attendance_rate": 26.0,
+        "next_date": "2026-08-21",
+        "attended_next": {
+          "numerator": 81,
+          "denominator": 122,
+          "rate": 66.4
+        },
+        "absent_next": {
+          "numerator": 190,
+          "denominator": 351,
+          "rate": 54.1
+        },
+        "attended_any_future": {
+          "numerator": 91,
+          "denominator": 122,
+          "rate": 74.6
+        },
+        "absent_any_future": {
+          "numerator": 234,
+          "denominator": 351,
+          "rate": 66.7
+        }
+      },
+      {
+        "date": "2026-08-21",
+        "applicants": 929,
+        "attended": 209,
+        "absent": 718,
+        "attendance_rate": 22.5,
+        "next_date": "2026-09-16",
+        "attended_next": {
+          "numerator": 119,
+          "denominator": 209,
+          "rate": 56.9
+        },
+        "absent_next": {
+          "numerator": 272,
+          "denominator": 718,
+          "rate": 37.9
+        },
+        "attended_any_future": {
+          "numerator": 119,
+          "denominator": 209,
+          "rate": 56.9
+        },
+        "absent_any_future": {
+          "numerator": 272,
+          "denominator": 718,
+          "rate": 37.9
+        }
+      },
+      {
+        "date": "2026-09-16",
+        "applicants": 1298,
+        "attended": 345,
+        "absent": 953,
+        "attendance_rate": 26.6,
+        "next_date": null,
+        "attended_next": null,
+        "absent_next": null,
+        "attended_any_future": null,
+        "absent_any_future": null
+      }
+    ]
   }
 }

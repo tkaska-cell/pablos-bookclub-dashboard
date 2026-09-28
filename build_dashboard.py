@@ -146,7 +146,7 @@ for d in prev_dates:
         "rate": round(100 * cont / base, 1) if base else 0,
     })
 
-# 実参加（Zoomリアルタイム接続ベース）— data/attendance_anon.csv があるときだけ
+# 実参加（Zoom滞在合計30分以上）— data/attendance_anon.csv があるときだけ
 # ファイルは scripts/label_attendance.py（Step A-1c）が回ごとに書き換える。
 ATT_SRC = ROOT / "data" / "attendance_anon.csv"
 attendance = None
@@ -194,7 +194,7 @@ if ATT_SRC.exists():
         })
     if att_events:
         attendance = {
-            "note": "Zoomリアルタイム接続 × MyASP申込者の突合（開催翌日にラベル付与）。"
+            "note": "Zoom滞在合計30分以上（2026-09-28確定）× MyASP申込者の突合（開催翌日にラベル付与）。"
                     "突合できない分は未特定として不参加側に含む。",
             "events": att_events,
         }

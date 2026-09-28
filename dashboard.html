@@ -169,6 +169,7 @@
         <summary class="archive-link">📂 過去のレポート ▾</summary>
         <ul>
           <!-- ARCHIVE_LIST_TOP: update_month.sh がここへ最新スナップショットを自動挿入する -->
+          <li><a href="https://drive.google.com/file/d/12y9jKqDBxyAajIXnXdZQmZegyE5OcFzg/view" target="_blank" rel="noopener">2026-09-28（参加定義を30分に統一）</a></li>
           <li><a href="https://drive.google.com/file/d/1ji7R-5jTyZIWyJmC7k4tpS3n0_GFIPLh/view" target="_blank" rel="noopener">2026-09-18（9月読書会反映後）</a></li>
           <li><a href="https://drive.google.com/file/d/1pjtC3wrkcgOC7ouzauqE1m5UNmKafX0V/view" target="_blank" rel="noopener">2026-08-24（8月読書会反映後）</a></li>
           <li><a href="https://drive.google.com/file/d/1fyqQh4WH-UOiJKzYAkEcpYCsXTqznA3n/view" target="_blank" rel="noopener">2026-07-19（7月読書会反映後）</a></li>
@@ -261,9 +262,10 @@
 
   <!-- 参加 vs 不参加（実参加ベース） -->
   <section id="attendanceSection" style="display:none">
-    <h2>参加 vs 不参加（Zoomリアルタイム接続ベース）</h2>
+    <h2>参加 vs 不参加（Zoom滞在合計30分以上）</h2>
     <div class="panel" style="overflow-x:auto">
       <div class="desc" style="margin-bottom:12px">このセクションのみ<b>実参加ベース</b>（Zoom参加実績×MyASP突合、開催翌日にラベル付与）。突合できない分は未特定として不参加側に含む。</div>
+      <div class="asof-note" style="margin:0 0 12px;padding:8px 12px;background:#fff8e1;border-left:4px solid #f0a500;border-radius:4px;font-size:13px;line-height:1.7;color:#5a4500;">⚠️ <b>「月次集計テーブル」の当日参加より少なくなります。</b>あちらはZoom実績そのまま（7月148 / 8月226 / 9月383）、こちらはそこからMyASP申込者と突合できた人だけ（7月122 / 8月209 / 9月345）。差はメールアドレスが一致せず本人を特定できなかった方で、この表では不参加側に入っています。</div>
       <table id="attendanceTable">
         <thead>
           <tr>
@@ -279,6 +281,7 @@
   <!-- 月次テーブル -->
   <section>
     <h2>月次集計テーブル</h2>
+    <div class="asof-note" style="margin:8px 0 10px;padding:8px 12px;background:#fff8e1;border-left:4px solid #f0a500;border-radius:4px;font-size:13px;line-height:1.7;color:#5a4500;">⚠️ <b>「当日参加」の基準</b>：2026年7月以降は<b>Zoom滞在合計30分以上</b>（2026-09-28確定）。それ以前は記録時の基準のまま（回により入室ベース／60分ベースが混在）のため、7月をまたぐ増減は基準差を含みます。</div>
     <div class="panel" style="overflow-x:auto">
       <table id="monthTable">
         <thead>
@@ -354,8 +357,18 @@
           </dd>
         </dl>
         <dl class="gl-item">
+          <dt>参加（当日参加）</dt>
+          <dd><b>開催当日のZoom滞在時間の合計が30分以上</b>であること（2026-09-28確定）。
+            <br>・第1部と第2部を分けず、<b>開催枠全体を通した合計</b>で判定する。
+            <br>・途中で退室し再入室してレポート上の行が分かれても、<b>同一人物として合算</b>する。
+            <br>・29分以下の接続は参加に含めない（＝申込したが顔を出しただけの方は不参加）。
+            <br>・「参加 vs 不参加」セクションのみ、これに加えて<b>MyASP申込者との突合</b>が必要で、突合できなかった方は不参加側に入る。
+            <span class="why">▶ 目的：「入室しただけ」と「本当に読書会を体験した」を分けるため。この線引き以降の施策効果を同じものさしで追える。</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
           <dt>当日参加率</dt>
-          <dd>申込人数に対するZoom当日入室者の比率。
+          <dd>申込人数に対する当日参加者の比率。2026年7月以降の「参加」は<b>Zoom滞在合計30分以上</b>（再入室は合算）。それ以前は記録時の基準のまま。
             <span class="why">▶ 目的：申込から実出席への歩留まりを測る。30%未満は告知過多や日程ミスマッチのサイン。</span>
           </dd>
         </dl>
