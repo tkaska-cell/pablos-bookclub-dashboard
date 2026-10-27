@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-04 11:37",
-  "period": "2025-07-23 〜 2026-09-30（16回分）",
+  "generated_at": "2026-10-27 22:18",
+  "period": "2025-07-23 〜 2026-10-26（17回分）",
   "note": "※ 個人情報を含まないハッシュ化済みデータ（HMAC-SHA256・プロジェクト固有salt）から集計。2025年6月26日のシナリオはMyASP上でデータ不整合のため未集計。",
   "matrix": [
     {
@@ -130,38 +130,46 @@
       "一般": 652,
       "LINE": 0,
       "招待": 0
+    },
+    {
+      "date": "2026-10-26",
+      "total": 501,
+      "メンバー(NFT)": 0,
+      "一般": 501,
+      "LINE": 0,
+      "招待": 0
     }
   ],
   "cohort_to_latest": [
     {
       "date": "2025-07-23",
       "base": 33,
-      "continued": 5,
-      "rate": 15.2
+      "continued": 4,
+      "rate": 12.1
     },
     {
       "date": "2025-08-28",
       "base": 52,
-      "continued": 18,
-      "rate": 34.6
+      "continued": 8,
+      "rate": 15.4
     },
     {
       "date": "2025-09-10",
       "base": 67,
-      "continued": 17,
-      "rate": 25.4
+      "continued": 6,
+      "rate": 9.0
     },
     {
       "date": "2025-09-19",
       "base": 56,
-      "continued": 16,
-      "rate": 28.6
+      "continued": 8,
+      "rate": 14.3
     },
     {
       "date": "2025-10-21",
       "base": 63,
-      "continued": 15,
-      "rate": 23.8
+      "continued": 13,
+      "rate": 20.6
     },
     {
       "date": "2025-12-03",
@@ -172,96 +180,102 @@
     {
       "date": "2026-01-27",
       "base": 94,
-      "continued": 26,
-      "rate": 27.7
+      "continued": 25,
+      "rate": 26.6
     },
     {
       "date": "2026-02-18",
       "base": 595,
-      "continued": 103,
-      "rate": 17.3
+      "continued": 94,
+      "rate": 15.8
     },
     {
       "date": "2026-03-18",
       "base": 984,
-      "continued": 139,
-      "rate": 14.1
+      "continued": 132,
+      "rate": 13.4
     },
     {
       "date": "2026-04-23",
       "base": 1047,
-      "continued": 195,
-      "rate": 18.6
+      "continued": 192,
+      "rate": 18.3
     },
     {
       "date": "2026-05-15",
       "base": 411,
-      "continued": 115,
-      "rate": 28.0
+      "continued": 109,
+      "rate": 26.5
     },
     {
       "date": "2026-06-23",
       "base": 458,
-      "continued": 122,
-      "rate": 26.6
+      "continued": 129,
+      "rate": 28.2
     },
     {
       "date": "2026-07-17",
       "base": 470,
-      "continued": 136,
-      "rate": 28.9
+      "continued": 134,
+      "rate": 28.5
     },
     {
       "date": "2026-08-21",
       "base": 929,
-      "continued": 213,
-      "rate": 22.9
+      "continued": 207,
+      "rate": 22.3
     },
     {
       "date": "2026-09-16",
       "base": 1298,
-      "continued": 314,
-      "rate": 24.2
+      "continued": 245,
+      "rate": 18.9
+    },
+    {
+      "date": "2026-09-30",
+      "base": 652,
+      "continued": 172,
+      "rate": 26.4
     }
   ],
   "latest": {
-    "date": "2026-09-30",
-    "total": 652,
-    "new": 248,
-    "repeat": 404,
-    "new_pct": 38.0,
-    "repeat_pct": 62.0
+    "date": "2026-10-26",
+    "total": 501,
+    "new": 123,
+    "repeat": 378,
+    "new_pct": 24.6,
+    "repeat_pct": 75.4
   },
   "tier": {
-    "新規": 248,
-    "2回目": 106,
-    "3回以上": 298
+    "新規": 123,
+    "2回目": 75,
+    "3回以上": 303
   },
   "streak3": {
     "dates": [
-      "2026-08-21",
       "2026-09-16",
-      "2026-09-30"
+      "2026-09-30",
+      "2026-10-26"
     ],
-    "count": 166,
-    "rate_of_latest": 25.5,
-    "tier3_consecutive": 166,
-    "tier3_intermittent": 132
+    "count": 132,
+    "rate_of_latest": 26.3,
+    "tier3_consecutive": 132,
+    "tier3_intermittent": 171
   },
   "kpi": {
-    "f2_rate": 4.7,
-    "f2_numerator": 106,
-    "f2_denominator": 2274,
+    "f2_rate": 3.1,
+    "f2_numerator": 75,
+    "f2_denominator": 2416,
     "f2_target": 25.0,
-    "f2_gap": -20.3,
-    "loyal_rate": 22.5,
-    "loyal_numerator": 298,
-    "loyal_denominator": 1327,
+    "f2_gap": -21.9,
+    "loyal_rate": 21.1,
+    "loyal_numerator": 303,
+    "loyal_denominator": 1433,
     "loyal_target": 60.0,
-    "loyal_gap": -37.5
+    "loyal_gap": -38.9
   },
   "totals": {
-    "cumulative_unique": 3849
+    "cumulative_unique": 3972
   },
   "attendance": {
     "note": "Zoom滞在合計30分以上（2026-09-28確定）× MyASP申込者の突合（開催翌日にラベル付与）。突合できない分は未特定として不参加側に含む。",
@@ -284,14 +298,14 @@
           "rate": 54.1
         },
         "attended_any_future": {
-          "numerator": 92,
+          "numerator": 93,
           "denominator": 122,
-          "rate": 75.4
+          "rate": 76.2
         },
         "absent_any_future": {
-          "numerator": 242,
+          "numerator": 248,
           "denominator": 351,
-          "rate": 68.9
+          "rate": 70.7
         }
       },
       {
@@ -312,14 +326,14 @@
           "rate": 37.9
         },
         "attended_any_future": {
-          "numerator": 134,
+          "numerator": 139,
           "denominator": 209,
-          "rate": 64.1
+          "rate": 66.5
         },
         "absent_any_future": {
-          "numerator": 304,
+          "numerator": 350,
           "denominator": 718,
-          "rate": 42.3
+          "rate": 48.7
         }
       },
       {
@@ -340,14 +354,14 @@
           "rate": 20.6
         },
         "attended_any_future": {
-          "numerator": 118,
+          "numerator": 156,
           "denominator": 345,
-          "rate": 34.2
+          "rate": 45.2
         },
         "absent_any_future": {
-          "numerator": 196,
+          "numerator": 272,
           "denominator": 953,
-          "rate": 20.6
+          "rate": 28.5
         }
       },
       {
@@ -356,6 +370,34 @@
         "attended": 222,
         "absent": 430,
         "attendance_rate": 34.0,
+        "next_date": "2026-10-26",
+        "attended_next": {
+          "numerator": 72,
+          "denominator": 222,
+          "rate": 32.4
+        },
+        "absent_next": {
+          "numerator": 100,
+          "denominator": 430,
+          "rate": 23.3
+        },
+        "attended_any_future": {
+          "numerator": 72,
+          "denominator": 222,
+          "rate": 32.4
+        },
+        "absent_any_future": {
+          "numerator": 100,
+          "denominator": 430,
+          "rate": 23.3
+        }
+      },
+      {
+        "date": "2026-10-26",
+        "applicants": 501,
+        "attended": 165,
+        "absent": 336,
+        "attendance_rate": 32.9,
         "next_date": null,
         "attended_next": null,
         "absent_next": null,
