@@ -25,10 +25,10 @@ trap "kill $SERVER_PID 2>/dev/null || true" EXIT
 sleep 1.5
 
 "$CHROME" --headless=new --hide-scrollbars --disable-gpu \
-  --window-size=1400,8000 \
+  --window-size=1400,12000 \
   --virtual-time-budget=8000 \
   --screenshot="$SNAPSHOT_PNG" \
-  "http://localhost:${PORT}/dashboard.html" >/dev/null 2>&1
+  "http://localhost:${PORT}/dashboard.html" >/dev/null 2>&1 || true   # 11/08: Chromeが画像出力後に exit 2 を返すため（PNGの有無は直後で検査）
 
 kill $SERVER_PID 2>/dev/null || true
 trap - EXIT
@@ -46,7 +46,7 @@ bg = a[-1, 0]
 rows = np.where((np.abs(a - bg) > 8).any(axis=1))[0]
 bottom = min(int(rows.max()) + 60, im.height) if len(rows) else im.height
 if bottom >= im.height - 60:
-    sys.exit("✗ 描画が8000pxを超えています。--window-size を上げてください")
+    sys.exit("✗ 描画が12000pxを超えています。--window-size を上げてください")
 im.crop((0, 0, im.width, bottom)).save(p); print(f"   トリム後 {im.width}x{bottom}")
 PY
 

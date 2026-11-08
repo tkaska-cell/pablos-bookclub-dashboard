@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28 08:37",
+  "generated_at": "2026-11-08 22:46",
   "period": "2025-07-23 〜 2026-10-26（17回分）",
   "note": "※ 個人情報を含まないハッシュ化済みデータ（HMAC-SHA256・プロジェクト固有salt）から集計。2025年6月26日のシナリオはMyASP上でデータ不整合のため未集計。",
   "matrix": [
@@ -263,6 +263,389 @@
     "tier3_intermittent": 171
   },
   "kpi": {
+    "definition_changed": "2026-10-28",
+    "from": "2026-09-30",
+    "to": "2026-10-26",
+    "days": 26,
+    "prev_interval": "2026-09-16→2026-09-30",
+    "continuity": {
+      "numerator": 172,
+      "denominator": 652,
+      "rate": 26.4
+    },
+    "continuity_delta": 2.2,
+    "f2": {
+      "numerator": 17,
+      "denominator": 248,
+      "rate": 6.9
+    },
+    "f2_delta": -5.1,
+    "f2_target": 25.0,
+    "f2_gap": -18.1,
+    "repeater": {
+      "numerator": 155,
+      "denominator": 404,
+      "rate": 38.4
+    },
+    "repeater_delta": 3.7,
+    "repeater_target": 60.0,
+    "repeater_gap": -21.6
+  },
+  "consecutive": {
+    "note": "開催順で直前の回→その回の連続で計算（2026-10-28 定義変更）。新規＝その回が初申込、リピーター＝その回の時点で2回目以上。",
+    "series": [
+      {
+        "from": "2025-07-23",
+        "to": "2025-08-28",
+        "days": 36,
+        "from_total": 33,
+        "to_total": 52,
+        "continuity": {
+          "numerator": 3,
+          "denominator": 33,
+          "rate": 9.1
+        },
+        "f2": {
+          "numerator": 3,
+          "denominator": 33,
+          "rate": 9.1
+        },
+        "repeater": null
+      },
+      {
+        "from": "2025-08-28",
+        "to": "2025-09-10",
+        "days": 13,
+        "from_total": 52,
+        "to_total": 67,
+        "continuity": {
+          "numerator": 12,
+          "denominator": 52,
+          "rate": 23.1
+        },
+        "f2": {
+          "numerator": 11,
+          "denominator": 49,
+          "rate": 22.4
+        },
+        "repeater": {
+          "numerator": 1,
+          "denominator": 3,
+          "rate": 33.3
+        }
+      },
+      {
+        "from": "2025-09-10",
+        "to": "2025-09-19",
+        "days": 9,
+        "from_total": 67,
+        "to_total": 56,
+        "continuity": {
+          "numerator": 15,
+          "denominator": 67,
+          "rate": 22.4
+        },
+        "f2": {
+          "numerator": 6,
+          "denominator": 53,
+          "rate": 11.3
+        },
+        "repeater": {
+          "numerator": 9,
+          "denominator": 14,
+          "rate": 64.3
+        }
+      },
+      {
+        "from": "2025-09-19",
+        "to": "2025-10-21",
+        "days": 32,
+        "from_total": 56,
+        "to_total": 63,
+        "continuity": {
+          "numerator": 26,
+          "denominator": 56,
+          "rate": 46.4
+        },
+        "f2": {
+          "numerator": 7,
+          "denominator": 28,
+          "rate": 25.0
+        },
+        "repeater": {
+          "numerator": 19,
+          "denominator": 28,
+          "rate": 67.9
+        }
+      },
+      {
+        "from": "2025-10-21",
+        "to": "2025-12-03",
+        "days": 43,
+        "from_total": 63,
+        "to_total": 303,
+        "continuity": {
+          "numerator": 23,
+          "denominator": 63,
+          "rate": 36.5
+        },
+        "f2": {
+          "numerator": 4,
+          "denominator": 28,
+          "rate": 14.3
+        },
+        "repeater": {
+          "numerator": 19,
+          "denominator": 35,
+          "rate": 54.3
+        }
+      },
+      {
+        "from": "2025-12-03",
+        "to": "2026-01-27",
+        "days": 55,
+        "from_total": 303,
+        "to_total": 94,
+        "continuity": {
+          "numerator": 21,
+          "denominator": 303,
+          "rate": 6.9
+        },
+        "f2": {
+          "numerator": 12,
+          "denominator": 264,
+          "rate": 4.5
+        },
+        "repeater": {
+          "numerator": 9,
+          "denominator": 39,
+          "rate": 23.1
+        }
+      },
+      {
+        "from": "2026-01-27",
+        "to": "2026-02-18",
+        "days": 22,
+        "from_total": 94,
+        "to_total": 595,
+        "continuity": {
+          "numerator": 43,
+          "denominator": 94,
+          "rate": 45.7
+        },
+        "f2": {
+          "numerator": 26,
+          "denominator": 63,
+          "rate": 41.3
+        },
+        "repeater": {
+          "numerator": 17,
+          "denominator": 31,
+          "rate": 54.8
+        }
+      },
+      {
+        "from": "2026-02-18",
+        "to": "2026-03-18",
+        "days": 28,
+        "from_total": 595,
+        "to_total": 984,
+        "continuity": {
+          "numerator": 186,
+          "denominator": 595,
+          "rate": 31.3
+        },
+        "f2": {
+          "numerator": 122,
+          "denominator": 473,
+          "rate": 25.8
+        },
+        "repeater": {
+          "numerator": 64,
+          "denominator": 122,
+          "rate": 52.5
+        }
+      },
+      {
+        "from": "2026-03-18",
+        "to": "2026-04-23",
+        "days": 36,
+        "from_total": 984,
+        "to_total": 1047,
+        "continuity": {
+          "numerator": 324,
+          "denominator": 984,
+          "rate": 32.9
+        },
+        "f2": {
+          "numerator": 172,
+          "denominator": 732,
+          "rate": 23.5
+        },
+        "repeater": {
+          "numerator": 152,
+          "denominator": 252,
+          "rate": 60.3
+        }
+      },
+      {
+        "from": "2026-04-23",
+        "to": "2026-05-15",
+        "days": 22,
+        "from_total": 1047,
+        "to_total": 411,
+        "continuity": {
+          "numerator": 243,
+          "denominator": 1047,
+          "rate": 23.2
+        },
+        "f2": {
+          "numerator": 77,
+          "denominator": 591,
+          "rate": 13.0
+        },
+        "repeater": {
+          "numerator": 166,
+          "denominator": 456,
+          "rate": 36.4
+        }
+      },
+      {
+        "from": "2026-05-15",
+        "to": "2026-06-23",
+        "days": 39,
+        "from_total": 411,
+        "to_total": 458,
+        "continuity": {
+          "numerator": 159,
+          "denominator": 411,
+          "rate": 38.7
+        },
+        "f2": {
+          "numerator": 19,
+          "denominator": 114,
+          "rate": 16.7
+        },
+        "repeater": {
+          "numerator": 140,
+          "denominator": 297,
+          "rate": 47.1
+        }
+      },
+      {
+        "from": "2026-06-23",
+        "to": "2026-07-17",
+        "days": 24,
+        "from_total": 458,
+        "to_total": 470,
+        "continuity": {
+          "numerator": 193,
+          "denominator": 458,
+          "rate": 42.1
+        },
+        "f2": {
+          "numerator": 25,
+          "denominator": 136,
+          "rate": 18.4
+        },
+        "repeater": {
+          "numerator": 168,
+          "denominator": 322,
+          "rate": 52.2
+        }
+      },
+      {
+        "from": "2026-07-17",
+        "to": "2026-08-21",
+        "days": 35,
+        "from_total": 470,
+        "to_total": 929,
+        "continuity": {
+          "numerator": 270,
+          "denominator": 470,
+          "rate": 57.4
+        },
+        "f2": {
+          "numerator": 38,
+          "denominator": 118,
+          "rate": 32.2
+        },
+        "repeater": {
+          "numerator": 232,
+          "denominator": 352,
+          "rate": 65.9
+        }
+      },
+      {
+        "from": "2026-08-21",
+        "to": "2026-09-16",
+        "days": 26,
+        "from_total": 929,
+        "to_total": 1298,
+        "continuity": {
+          "numerator": 388,
+          "denominator": 929,
+          "rate": 41.8
+        },
+        "f2": {
+          "numerator": 64,
+          "denominator": 319,
+          "rate": 20.1
+        },
+        "repeater": {
+          "numerator": 324,
+          "denominator": 610,
+          "rate": 53.1
+        }
+      },
+      {
+        "from": "2026-09-16",
+        "to": "2026-09-30",
+        "days": 14,
+        "from_total": 1298,
+        "to_total": 652,
+        "continuity": {
+          "numerator": 314,
+          "denominator": 1298,
+          "rate": 24.2
+        },
+        "f2": {
+          "numerator": 72,
+          "denominator": 600,
+          "rate": 12.0
+        },
+        "repeater": {
+          "numerator": 242,
+          "denominator": 698,
+          "rate": 34.7
+        }
+      },
+      {
+        "from": "2026-09-30",
+        "to": "2026-10-26",
+        "days": 26,
+        "from_total": 652,
+        "to_total": 501,
+        "continuity": {
+          "numerator": 172,
+          "denominator": 652,
+          "rate": 26.4
+        },
+        "f2": {
+          "numerator": 17,
+          "denominator": 248,
+          "rate": 6.9
+        },
+        "repeater": {
+          "numerator": 155,
+          "denominator": 404,
+          "rate": 38.4
+        }
+      }
+    ]
+  },
+  "legacy_kpi": {
+    "note": "2026-10-28 定義変更により画面から除外（旧F2・旧ロイヤルは分母が積み上がる残余型のため）。参考保存のみ。",
     "f2_rate": 3.1,
     "f2_numerator": 75,
     "f2_denominator": 2416,

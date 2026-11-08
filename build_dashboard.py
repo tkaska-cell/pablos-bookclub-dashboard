@@ -15,9 +15,10 @@ SRC = ROOT / "data" / "readers_anon.csv"
 OUT = ROOT / "dashboard_data.json"
 
 # 目標値（西村さんフィードバック 2026-05-11: F2≥25%＆年間継続率≥60% でないと年次リピートが回らない）
+# 2026-10-28 定義変更後も目標値は引き継ぐ（F2=25% / リピーター継続率=60%）
 TARGETS = {
     "f2_rate": 25.0,        # F2転換率目標
-    "loyal_rate": 60.0,     # ロイヤル（年間継続率）目標
+    "loyal_rate": 60.0,     # リピーター継続率目標（旧ロイヤル継続率の目標を引き継ぎ）
 }
 
 # シナリオ名 → (date, segment) マッピング
@@ -136,6 +137,69 @@ loyal_num = len(prior_2plus & latest_set)
 loyal_den = len(prior_2plus)
 loyal_rate = round(100 * loyal_num / loyal_den, 1) if loyal_den else 0
 
+# 連続KPI（2026-10-28 定義変更・高須賀さん/豊留さん合意）
+# すべて「開催順で直前の回 → その回」で計算する（積み上げ型の残余母数は使わない）
+#   継続率        = 直前回の申込者のうち今回も申込
+#   F2転換率      = 直前回が初申込（新規）だった方のうち今回も申込
+#   リピーター継続率 = 直前回時点で2回目以上だった方のうち今回も申込
+first_date = {}
+for d in dates:
+    for h in participants[d]:
+        first_date.setdefault(h, d)
+
+def _rate(sub, target):
+    den = len(sub)
+    if not den:
+        return None
+    num = len(sub & target)
+    return {"numerator": num, "denominator": den, "rate": round(100 * num / den, 1)}
+
+consecutive_series = []
+for a, b in zip(dates, dates[1:]):
+    pa, pb = participants[a], participants[b]
+    new_a = {h for h in pa if first_date[h] == a}
+    rep_a = pa - new_a
+    consecutive_series.append({
+        "from": a,
+        "to": b,
+        "days": (datetime.strptime(b, "%Y-%m-%d") - datetime.strptime(a, "%Y-%m-%d")).days,
+        "from_total": len(pa),
+        "to_total": len(pb),
+        "continuity": _rate(pa, pb),
+        "f2": _rate(new_a, pb),
+        "repeater": _rate(rep_a, pb),
+    })
+
+def _r(x):
+    return x["rate"] if x else None
+
+def _delta(cur, prev):
+    if cur is None or prev is None:
+        return None
+    return round(cur - prev, 1)
+
+kpi = None
+if consecutive_series:
+    cur = consecutive_series[-1]
+    prv = consecutive_series[-2] if len(consecutive_series) >= 2 else None
+    kpi = {
+        "definition_changed": "2026-10-28",
+        "from": cur["from"],
+        "to": cur["to"],
+        "days": cur["days"],
+        "prev_interval": f"{prv['from']}→{prv['to']}" if prv else None,
+        "continuity": cur["continuity"],
+        "continuity_delta": _delta(_r(cur["continuity"]), _r(prv["continuity"]) if prv else None),
+        "f2": cur["f2"],
+        "f2_delta": _delta(_r(cur["f2"]), _r(prv["f2"]) if prv else None),
+        "f2_target": TARGETS["f2_rate"],
+        "f2_gap": _delta(_r(cur["f2"]), TARGETS["f2_rate"]),
+        "repeater": cur["repeater"],
+        "repeater_delta": _delta(_r(cur["repeater"]), _r(prv["repeater"]) if prv else None),
+        "repeater_target": TARGETS["loyal_rate"],
+        "repeater_gap": _delta(_r(cur["repeater"]), TARGETS["loyal_rate"]),
+    }
+
 # Cohort
 cohort = []
 for d in prev_dates:
@@ -235,7 +299,13 @@ result = {
         "tier3_consecutive": len(tier_3p_streak),
         "tier3_intermittent": len(tier_3p_skip),
     },
-    "kpi": {
+    "kpi": kpi,
+    "consecutive": {
+        "note": "開催順で直前の回→その回の連続で計算（2026-10-28 定義変更）。新規＝その回が初申込、リピーター＝その回の時点で2回目以上。",
+        "series": consecutive_series,
+    },
+    "legacy_kpi": {
+        "note": "2026-10-28 定義変更により画面から除外（旧F2・旧ロイヤルは分母が積み上がる残余型のため）。参考保存のみ。",
         "f2_rate": f2_rate,
         "f2_numerator": f2_num,
         "f2_denominator": f2_den,
@@ -257,8 +327,13 @@ if attendance:
 
 OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2))
 print(f"✓ {OUT.name} 更新")
-print(f"   F2: {f2_rate}% ({f2_num}/{f2_den})")
-print(f"   ロイヤル: {loyal_rate}% ({loyal_num}/{loyal_den})")
+if kpi:
+    _f = lambda x: f"{x['rate']}% ({x['numerator']}/{x['denominator']})" if x else "–"
+    print(f"   [連続 {kpi['from']}→{kpi['to']}・{kpi['days']}日]")
+    print(f"   前回からの継続率: {_f(kpi['continuity'])}")
+    print(f"   F2転換率: {_f(kpi['f2'])} 目標{kpi['f2_target']}%")
+    print(f"   リピーター継続率: {_f(kpi['repeater'])} 目標{kpi['repeater_target']}%")
+print(f"   (legacy) F2残余型: {f2_rate}% ({f2_num}/{f2_den}) / ロイヤル: {loyal_rate}% ({loyal_num}/{loyal_den})")
 print(f"   直近3回連続参加: {streak3_count}名 ({streak3_rate}% / 直近回参加者ベース) [{', '.join(last3)}]")
 print(f"   {latest}: {total}名（新規{new_count} / リピート{rep_count}）")
 print(f"   累計ユニーク: {len(history)}名")

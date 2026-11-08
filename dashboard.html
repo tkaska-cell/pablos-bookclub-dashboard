@@ -81,6 +81,28 @@
   .stat.gold .num{color:#A88B40}
   .stat.gold{background:linear-gradient(135deg,#FFFAEC 0%,#FDF4D7 100%);border-color:#EFE0B0}
 
+  /* 上段KPI（2026-10-28 連続定義） */
+  .hero-main{display:grid;grid-template-columns:1fr 1.6fr 1fr 1fr;gap:12px;margin-bottom:12px}
+  .hero-sub{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:40px}
+  .hero-sub .stat{padding:14px 22px}
+  .hero-sub .stat .num{font-size:22px}
+  .stat.main{background:#1A1A1A;border-color:#1A1A1A;color:#FAF9F6}
+  .stat.main .lbl,.stat.main .sub,.stat.main .num small{color:#CFC8B8}
+  .stat.main .num{font-size:46px;color:#FFD58A}
+  .stat.main .basis{border-top-color:#444;color:#CFC8B8}
+  .stat.main .basis b{color:#FAF9F6}
+  .stat.main .gap-pos{color:#7FD3A8}
+  .stat.main .gap-neg{color:#F2A27A}
+  .stat .delta{font-size:11px;color:var(--sub);margin-top:4px}
+  .stat .basis{margin-top:8px;padding-top:8px;border-top:1px dashed #E3D9B8;font-size:11px;color:var(--sub)}
+  .stat .basis b{color:var(--ink);font-weight:600}
+  .stat .kome{font-size:10.5px;color:#888;margin-top:6px;line-height:1.5}
+  .stat.main .kome{color:#A9A294}
+  @media (max-width:1080px){ .hero-main{grid-template-columns:1fr 1fr} .hero-main .stat.main{grid-column:span 2;order:-1} }
+  @media (max-width:560px){ .hero-main{grid-template-columns:1fr} .hero-main .stat.main{grid-column:auto} }
+  .chart-box{position:relative;height:300px}
+  .chart-box canvas{max-height:none}
+
   section{margin-bottom:40px}
   section > h2{
     font-size:13px;font-weight:600;letter-spacing:.05em;
@@ -163,12 +185,13 @@
     <span class="logo">PABLOS</span>
     <h1>エキスパート読書会 ダッシュボード</h1>
     <div id="asOf" class="asof">–</div>
-    <div class="asof-note" style="margin:8px 0 0;padding:8px 12px;background:#fff8e1;border-left:4px solid #f0a500;border-radius:4px;font-size:13px;line-height:1.7;color:#5a4500;">⚠️ 本ダッシュボードのKPI（F2転換率・ロイヤル継続率・3回連続申込率・コホート）は<b>すべて「申込ベース」</b>です（「参加 vs 不参加」セクションを除く）。当日Zoomに参加したかは含みません。<br>当日参加の実数は「月次推移」グラフをご覧ください。</div>
+    <div class="asof-note" style="margin:8px 0 0;padding:8px 12px;background:#fff8e1;border-left:4px solid #f0a500;border-radius:4px;font-size:13px;line-height:1.7;color:#5a4500;">⚠️ 本ダッシュボードのKPI（前回からの継続率・F2転換率・リピーター継続率・3回連続申込率・コホート）は<b>すべて「申込ベース」</b>です（「参加 vs 不参加」セクションを除く）。当日Zoomに参加したかは含みません。<br>当日参加の実数は「月次推移」グラフをご覧ください。</div>
     <div class="meta">
       <details class="archive-dropdown">
         <summary class="archive-link">📂 過去のレポート ▾</summary>
         <ul>
           <!-- ARCHIVE_LIST_TOP: update_month.sh がここへ最新スナップショットを自動挿入する -->
+          <li><a href="https://drive.google.com/file/d/1vbE-Lb1LexF9HVdSBTVAq-yZZorrxmSv/view" target="_blank" rel="noopener">2026-11-08（KPI定義見直し）</a></li>
           <li><a href="https://drive.google.com/file/d/16amqnYabDRQWKu14coTsuOnBiud5Lspq/view" target="_blank" rel="noopener">2026-10-26（10月読書会反映後）</a></li>
           <li><a href="https://drive.google.com/file/d/1lIiSq7kL_nZ0_ePAE6BWTUegO9VJljxW/view" target="_blank" rel="noopener">2026-10-04（9/30読書会反映後）</a></li>
           <li><a href="https://drive.google.com/file/d/12y9jKqDBxyAajIXnXdZQmZegyE5OcFzg/view" target="_blank" rel="noopener">2026-09-28（参加定義を30分に統一）</a></li>
@@ -188,35 +211,52 @@
 
   <div class="note" id="note"></div>
 
-  <!-- HERO KPI -->
-  <div class="hero">
+  <!-- HERO KPI（2026-10-28 定義変更：すべて「直前の回 → 今回」の連続で計算） -->
+  <div class="hero-main">
+    <div class="stat">
+      <div class="lbl">今回 <span class="term" tabindex="0">申込数<span class="tip"><b>申込ユニーク</b><br>同一メールアドレスを1名としてカウント。1人が複数チャネル（NFT/一般/LINE）から申し込んでも1名に名寄せ。</span></span>（ユニーク）</div>
+      <div class="num"><span id="totalLatest">–</span><small>名</small></div>
+      <div class="sub">新規 <span id="newLatest"></span>名 / 過去参加あり <span id="repLatest"></span>名</div>
+      <div class="basis"><b id="latestDate">–</b> 開催回</div>
+    </div>
+    <div class="stat main">
+      <div class="lbl"><span class="term" tabindex="0">前回からの継続率<span class="tip"><b>前回からの継続率（リピ率）</b><br>直前の回の申込者のうち、今回も申し込んだ割合。<br><br>毎回「直前の回 → 今回」の連続で計算するので、母数が積み上がらず回ごとの比較ができる。</span></span></div>
+      <div class="num"><span id="cont">–</span><small>%</small></div>
+      <div class="sub"><span id="contSub"></span></div>
+      <div class="delta">前回比 <span id="contDelta">–</span></div>
+      <div class="basis"><b id="contBasis">–</b></div>
+      <div class="kome">※ 継続率＝前回の申込者のうち今回も申し込んだ割合</div>
+    </div>
     <div class="stat gold">
-      <div class="lbl"><span class="term" tabindex="0">F2 転換率<span class="tip"><b>F2 転換率</b><br>「過去1回だけ申込した人」のうち、直近回も申込した比率。<br><br>初回申込者をどれだけ"2回目"に引き戻せたかを示す、新規→定着の入口指標。SaaS / 教育サービスでは20-30%が目安。</span></span></div>
+      <div class="lbl"><span class="term" tabindex="0">F2 転換率<span class="tip"><b>F2 転換率</b><br>直前の回が初申込（新規）だった方のうち、今回も申し込んだ割合。<br><br>初回申込者をどれだけ"2回目"につなげられたかを示す、新規→定着の入口指標。</span></span></div>
       <div class="num"><span id="f2">–</span><small>%</small></div>
-      <div class="sub">過去1回申込 → 直近回も申込（<span id="f2sub"></span>）</div>
+      <div class="sub"><span id="f2sub"></span></div>
       <div class="target">
-        <span>目標 <b id="f2tgt">–</b>%（年間継続率60%達成ライン）</span>
+        <span>目標 <b id="f2tgt">–</b>%</span>
         <span id="f2gap">–</span>
       </div>
+      <div class="delta">前回比 <span id="f2Delta">–</span></div>
+      <div class="basis"><b id="f2Basis">–</b></div>
+      <div class="kome">※ F2＝前回が初申込の方のうち今回も申し込んだ割合</div>
     </div>
     <div class="stat gold">
-      <div class="lbl"><span class="term" tabindex="0">ロイヤル継続率<span class="tip"><b>ロイヤル継続率</b><br>「過去2回以上参加した人」のうち、直近回もリピートした比率。<br><br>固定ファン層が離脱せず残っているかを示す、コミュニティの体力指標。50%超なら健全圏。</span></span></div>
-      <div class="num"><span id="loyal">–</span><small>%</small></div>
-      <div class="sub">過去2回以上申込 → 直近回も申込（<span id="loyalsub"></span>）</div>
+      <div class="lbl"><span class="term" tabindex="0">リピーター継続率<span class="tip"><b>リピーター継続率</b><br>直前の回の時点で2回目以上だったリピーターのうち、今回も申し込んだ割合。<br><br>固定ファン層が離脱せず残っているかを示す、コミュニティの体力指標。</span></span></div>
+      <div class="num"><span id="rep">–</span><small>%</small></div>
+      <div class="sub"><span id="repSub"></span></div>
       <div class="target">
-        <span>目標 <b id="loyaltgt">–</b>%（年間継続率）</span>
-        <span id="loyalgap">–</span>
+        <span>目標 <b id="reptgt">–</b>%</span>
+        <span id="repgap">–</span>
       </div>
+      <div class="delta">前回比 <span id="repDelta">–</span></div>
+      <div class="basis"><b id="repBasis">–</b></div>
+      <div class="kome">※ リピーター継続率＝前回の時点で2回目以上だった方のうち今回も申し込んだ割合</div>
     </div>
-    <div class="stat gold">
-      <div class="lbl"><span class="term" tabindex="0">3回連続申込率<span class="tip"><b>直近3回連続申込率</b><br>直近3回（直近回 + その前2回）にすべて申込した人の比率（直近回の申込者ベース）。<br><br>「全体でポツポツ3回」ではなく、"連続して通い続けている真のロイヤル"を測る指標。途切れたら脱落とみなすため、ロイヤル継続率より厳しい。</span></span></div>
-      <div class="num"><span id="streak3">–</span><small>%</small></div>
-      <div class="sub"><span id="streak3sub"></span>名が3回連続参加（<span id="streak3dates"></span>）</div>
-    </div>
+  </div>
+  <div class="hero-sub">
     <div class="stat">
-      <div class="lbl">直近回 <span class="term" tabindex="0">申込ユニーク<span class="tip"><b>申込ユニーク</b><br>同一メールアドレスを1名としてカウント。1人が複数チャネル（NFT/一般/LINE）から申し込んでも1名に名寄せ。</span></span></div>
-      <div class="num"><span id="totalLatest">–</span></div>
-      <div class="sub">新規 <span id="newLatest"></span>名 / リピート <span id="repLatest"></span>名（<span id="latestDate"></span>）</div>
+      <div class="lbl"><span class="term" tabindex="0">3回連続申込率<span class="tip"><b>直近3回連続申込率</b><br>直近3回（直近回 + その前2回）にすべて申込した人の比率（直近回の申込者ベース）。<br><br>「全体でポツポツ3回」ではなく、"連続して通い続けている真のロイヤル"を測る指標。途切れたら脱落とみなす。</span></span></div>
+      <div class="num"><span id="streak3">–</span><small>%</small></div>
+      <div class="sub"><span id="streak3sub"></span>名が3回連続申込（<span id="streak3dates"></span>）</div>
     </div>
     <div class="stat">
       <div class="lbl"><span class="term" tabindex="0">累計ユニーク申込者<span class="tip"><b>累計ユニーク申込者</b><br>対象期間の全申込者を、メールアドレス単位で重複排除した実人数。同じ人が3回申し込んでいても1名としてカウント。</span></span></div>
@@ -225,6 +265,15 @@
     </div>
   </div>
 
+  <!-- 連続KPIの推移（2026-10-28 新設） -->
+  <section>
+    <h2>前回 → 今回の継続の推移（区間ごと）</h2>
+    <div class="panel">
+      <h3>継続率・F2転換率・リピーター継続率</h3>
+      <div class="desc">横軸＝開催順で「直前の回 → その回」の区間。点にカーソルを合わせると開催間隔（日数）と人数が出ます。点線＝F2目標25%。※2025年7〜8月・12月は履歴欠落／外部大型流入の特殊回のため参考値。</div>
+      <div class="chart-box"><canvas id="seriesChart"></canvas></div>
+    </div>
+  </section>
   <!-- 月次推移 -->
   <section>
     <h2>月次推移：申込人数・当日参加・<span class="term" tabindex="0" style="color:inherit">NPS<span class="tip"><b>NPS（Net Promoter Score）</b><br>「この読書会を友人に勧めたいか」を0-10点で聞き、「推奨者(9-10)% − 批判者(0-6)%」で算出する顧客ロイヤルティ指標。<br><br>+50以上で優良、+70以上でワールドクラス水準。</span></span></h2>
@@ -240,8 +289,8 @@
     <h2>直近回の申込者構成（<span class="term" tabindex="0" style="color:inherit">ハッシュ化ID<span class="tip"><b>ハッシュ化ID</b><br>メールアドレスをHMAC-SHA256で不可逆変換した16文字の識別子。同じ人は同じIDになるが、IDから元のメアドは復元不能。<br><br>個人情報を保持せずにリピート判定を可能にする手法。</span></span>ベース）</h2>
     <div class="grid2">
       <div class="panel">
-        <h3>新規 vs リピート</h3>
-        <div class="desc">直近回の申込者を、過去出現の有無で分類</div>
+        <h3>新規 vs 過去参加あり</h3>
+        <div class="desc">今回（直近回）の申込者を、過去の申込の有無で分類</div>
         <canvas id="newRepeat"></canvas>
       </div>
       <div class="panel">
@@ -254,10 +303,10 @@
 
   <!-- コホート -->
   <section>
-    <h2><span class="term" tabindex="0" style="color:inherit">コホート分析<span class="tip"><b>コホート分析</b><br>同じ条件（ここでは「同じ開催回に参加した」）でまとめたグループを"コホート"と呼び、そのグループが時間経過でどれだけ残ったかを追う手法。<br><br>個別の月次数字より、"その月の申込者は今でも残っているか"が見えるのが強み。</span></span>：各回の申込者は直近回までどれだけ残ったか</h2>
+    <h2><span class="term" tabindex="0" style="color:inherit">コホート分析<span class="tip"><b>コホート分析</b><br>同じ条件（ここでは「同じ開催回に参加した」）でまとめたグループを"コホート"と呼び、そのグループが時間経過でどれだけ残ったかを追う手法。<br><br>個別の月次数字より、"その月の申込者は今でも残っているか"が見えるのが強み。</span></span>：過去の各回から今回への戻り率</h2>
     <div class="panel">
-      <h3>基準回 → 直近回 継続率</h3>
-      <div class="desc">過去各開催回の申込者のうち、直近回も申込した人の比率</div>
+      <h3>過去の各回から今回への戻り率</h3>
+      <div class="desc">過去の各開催回の申込者のうち、今回（直近回）も申込した人の比率。※上段の「前回からの継続率」（直前の回→今回の連続）とは別の指標</div>
       <canvas id="cohortChart"></canvas>
     </div>
   </section>
@@ -315,23 +364,29 @@
     <div class="glossary">
       <div class="gl-grid">
         <dl class="gl-item">
-          <dt>F2 転換率</dt>
-          <dd>過去ちょうど1回参加した人のうち、直近回もリピートした比率。
-            <span class="why">▶ 目的：初回→2回目への引き戻し力を測る、新規→定着の入口指標。20-30%が業界目安。</span>
-            <span class="why">▶ 目標：25%（年間継続率60%を達成するために必要なライン／西村さん設定）</span>
+          <dt>前回からの継続率（リピ率）</dt>
+          <dd>直前の回の申込者のうち、今回も申し込んだ割合（2026-10-28 定義変更）。
+            <span class="why">▶ 目的：毎回「直前の回 → 今回」で計算するため母数が積み上がらず、回ごとの定着力を比べられる。開催間隔（日数）の影響も推移グラフで読める。</span>
           </dd>
         </dl>
         <dl class="gl-item">
-          <dt>ロイヤル継続率</dt>
-          <dd>過去2回以上参加した人のうち、直近回もリピートした比率。
-            <span class="why">▶ 目的：固定ファン層の体力を測る。50%超なら健全、70%超ならコミュニティとして強い。</span>
-            <span class="why">▶ 目標：60%（年間継続率＝年内リピート率／西村さん設定）</span>
+          <dt>F2 転換率</dt>
+          <dd>直前の回が初申込（新規）だった方のうち、今回も申し込んだ割合（2026-10-28 定義変更。旧定義は「過去1回だけの全員」が母数で積み上がっていた）。
+            <span class="why">▶ 目的：初回→2回目への引き戻し力を測る、新規→定着の入口指標。</span>
+            <span class="why">▶ 目標：25%（西村さん設定）</span>
+          </dd>
+        </dl>
+        <dl class="gl-item">
+          <dt>リピーター継続率</dt>
+          <dd>直前の回の時点で2回目以上だったリピーターのうち、今回も申し込んだ割合（2026-10-28 旧「ロイヤル継続率」から置換）。
+            <span class="why">▶ 目的：固定ファン層の体力を測る。</span>
+            <span class="why">▶ 目標：60%（西村さん設定）</span>
           </dd>
         </dl>
         <dl class="gl-item">
           <dt>3回連続申込率</dt>
           <dd>直近3回（直近回 + その前2回）にすべて申込した人の比率（直近回の申込者ベース）。
-            <span class="why">▶ 目的：「全体でポツポツ3回」ではなく"途切れず通い続けている真のロイヤル"を測る、ロイヤル継続率より厳しい指標。脱落の予兆検知にも使える。</span>
+            <span class="why">▶ 目的：「全体でポツポツ3回」ではなく"途切れず通い続けている真のロイヤル"を測る、リピーター継続率より厳しい指標。脱落の予兆検知にも使える。</span>
           </dd>
         </dl>
         <dl class="gl-item">
@@ -426,26 +481,38 @@ Promise.all([
     if(cc&&m){ cc.textContent=m[1]; }
   })();
   document.getElementById('note').textContent = d.note;
-  document.getElementById('f2').textContent = d.kpi.f2_rate;
-  document.getElementById('f2sub').textContent = `${d.kpi.f2_numerator}/${d.kpi.f2_denominator}名`;
-  document.getElementById('loyal').textContent = d.kpi.loyal_rate;
-  document.getElementById('loyalsub').textContent = `${d.kpi.loyal_numerator}/${d.kpi.loyal_denominator}名`;
+  // === 連続KPI（2026-10-28 定義変更：直前の回 → 今回） ===
+  const fmtGap = v => (v == null ? '–' : (v >= 0 ? `+${v.toFixed(1)}pt` : `${v.toFixed(1)}pt`));
+  const md = x => { const p = x.split('-'); return `${+p[1]}/${+p[2]}`; };
+  const setGap = (id, v) => {
+    const el = document.getElementById(id);
+    el.textContent = fmtGap(v);
+    el.className = v == null ? '' : (v >= 0 ? 'gap-pos' : 'gap-neg');
+  };
+  const setRate = (key, r) => {
+    document.getElementById(key).textContent = r ? r.rate : '–';
+  };
+  const k = d.kpi;
+  if (k) {
+    const span = `${md(k.from)}→${md(k.to)}`;
+    setRate('cont', k.continuity);
+    document.getElementById('contSub').textContent = k.continuity ? `${k.continuity.numerator}/${k.continuity.denominator}名` : '';
+    setGap('contDelta', k.continuity_delta);
+    document.getElementById('contBasis').textContent = k.continuity ? `${md(k.from)}（${k.continuity.denominator.toLocaleString()}名）→${md(k.to)}・間隔${k.days}日` : span;
 
-  // --- 目標差異（西村さんフィードバック 2026-05-11） ---
-  const fmtGap = v => (v >= 0 ? `+${v.toFixed(1)}pt` : `${v.toFixed(1)}pt`);
-  if (d.kpi.f2_target != null) {
-    document.getElementById('f2tgt').textContent = d.kpi.f2_target;
-    const g = d.kpi.f2_gap;
-    const el = document.getElementById('f2gap');
-    el.textContent = fmtGap(g);
-    el.className = g >= 0 ? 'gap-pos' : 'gap-neg';
-  }
-  if (d.kpi.loyal_target != null) {
-    document.getElementById('loyaltgt').textContent = d.kpi.loyal_target;
-    const g = d.kpi.loyal_gap;
-    const el = document.getElementById('loyalgap');
-    el.textContent = fmtGap(g);
-    el.className = g >= 0 ? 'gap-pos' : 'gap-neg';
+    setRate('f2', k.f2);
+    document.getElementById('f2sub').textContent = k.f2 ? `${k.f2.numerator}/${k.f2.denominator}名` : '';
+    document.getElementById('f2tgt').textContent = k.f2_target;
+    setGap('f2gap', k.f2_gap);
+    setGap('f2Delta', k.f2_delta);
+    document.getElementById('f2Basis').textContent = k.f2 ? `${md(k.from)}の新規（${k.f2.denominator.toLocaleString()}名）→${md(k.to)}` : span;
+
+    setRate('rep', k.repeater);
+    document.getElementById('repSub').textContent = k.repeater ? `${k.repeater.numerator}/${k.repeater.denominator}名` : '';
+    document.getElementById('reptgt').textContent = k.repeater_target;
+    setGap('repgap', k.repeater_gap);
+    setGap('repDelta', k.repeater_delta);
+    document.getElementById('repBasis').textContent = k.repeater ? `${md(k.from)}のリピーター（${k.repeater.denominator.toLocaleString()}名）→${md(k.to)}` : span;
   }
   if(d.streak3){
     document.getElementById('streak3').textContent = d.streak3.rate_of_latest;
@@ -458,6 +525,52 @@ Promise.all([
   document.getElementById('latestDate').textContent = d.latest.date;
   document.getElementById('cumul').textContent = d.totals.cumulative_unique.toLocaleString();
   document.getElementById('cumulPeriod').textContent = d.period.split('（')[0];
+
+  // === 連続KPIの推移（区間ごと・2026-10-28 新設） ===
+  (function(){
+    const S = (d.consecutive && d.consecutive.series) || [];
+    if(!S.length) return;
+    const yy = x => x.slice(2,4);
+    const lbl = s => `'${yy(s.from)} ${md(s.from)}→${md(s.to)}`;
+    const rv = r => (r ? r.rate : null);
+    const line = (label, key, color, w) => ({
+      label, data: S.map(s => rv(s[key])), _key: key,
+      borderColor: color, backgroundColor: color, borderWidth: w, tension: 0.2, pointRadius: 3, spanGaps: true
+    });
+    new Chart(document.getElementById('seriesChart'), {
+      type: 'line',
+      data: {
+        labels: S.map(lbl),
+        datasets: [
+          line('前回からの継続率', 'continuity', '#1A1A1A', 3),
+          line('F2転換率', 'f2', '#C8A960', 2),
+          line('リピーター継続率', 'repeater', '#7B5E1A', 2),
+          { label: `F2目標 ${d.kpi ? d.kpi.f2_target : 25}%`, data: S.map(() => (d.kpi ? d.kpi.f2_target : 25)),
+            borderColor: '#C8A960', borderDash: [6,4], borderWidth: 1.5, pointRadius: 0, pointHoverRadius: 0, fill: false }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+          tooltip: { callbacks: {
+            title: items => { const s = S[items[0].dataIndex]; return `${s.from} → ${s.to}（開催間隔 ${s.days}日）`; },
+            label: ctx => {
+              const key = ctx.dataset._key;
+              if(!key) return `${ctx.dataset.label}`;
+              const r = S[ctx.dataIndex][key];
+              return r ? `${ctx.dataset.label}: ${r.rate}%（${r.numerator}/${r.denominator}名）` : `${ctx.dataset.label}: –`;
+            }
+          } }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 100, title: { display: true, text: '%', font: { size: 11 } } },
+          x: { ticks: { font: { size: 10 }, maxRotation: 60, autoSkip: true } }
+        }
+      }
+    });
+  })();
 
   // === Monthly trend (combined) ===
   const months = [];
@@ -496,7 +609,7 @@ Promise.all([
   new Chart(document.getElementById('newRepeat'), {
     type:'doughnut',
     data:{
-      labels:[`新規 ${d.latest.new_pct}%`, `リピート ${d.latest.repeat_pct}%`],
+      labels:[`新規 ${d.latest.new_pct}%`, `今回申込者のうち過去参加あり ${d.latest.repeat_pct}%`],
       datasets:[{ data:[d.latest.new, d.latest.repeat], backgroundColor:['#1A1A1A','#C8A960'], borderWidth:0 }]
     },
     options:{ plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,font:{size:11}} } }, cutout:'65%' }
@@ -544,7 +657,7 @@ Promise.all([
       datasets:[
         { type:'bar', label:'基準回 申込ユニーク', data:d.cohort_to_latest.map(c=>c.base), backgroundColor:'#E5DBC0', borderRadius:4 },
         { type:'bar', label:`${d.latest.date} もリピート`, data:d.cohort_to_latest.map(c=>c.continued), backgroundColor:'#C8A960', borderRadius:4 },
-        { type:'line', label:'継続率(%)', data:d.cohort_to_latest.map(c=>c.rate), yAxisID:'y1', borderColor:'#1A1A1A', backgroundColor:'#1A1A1A', tension:0.25, pointRadius:3 }
+        { type:'line', label:'戻り率(%)', data:d.cohort_to_latest.map(c=>c.rate), yAxisID:'y1', borderColor:'#1A1A1A', backgroundColor:'#1A1A1A', tension:0.25, pointRadius:3 }
       ]
     },
     options:{
@@ -552,7 +665,7 @@ Promise.all([
       plugins:{ legend:{ position:'bottom', labels:{boxWidth:12,font:{size:11}} } },
       scales:{
         y:{ beginAtZero:true, position:'left' },
-        y1:{ beginAtZero:true, position:'right', max:100, grid:{drawOnChartArea:false}, title:{display:true, text:'継続率(%)', font:{size:11}} }
+        y1:{ beginAtZero:true, position:'right', max:100, grid:{drawOnChartArea:false}, title:{display:true, text:'戻り率(%)', font:{size:11}} }
       }
     }
   });
